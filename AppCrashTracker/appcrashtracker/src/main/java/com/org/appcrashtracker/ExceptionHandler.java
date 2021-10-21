@@ -216,7 +216,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			if(vm_free_heap_size)
 				jObjectData.put("VM_free_Heap_Size", ConvertSize(Runtime.getRuntime().maxMemory()));
 			if(native_allocated_size)
-				jObjectData.put("Native_Allocated_Size", HeapSize(ability));
+				jObjectData.put("Native_Allocated_Size", HeapSize());
 			if(battery_percentage)
 				jObjectData.put("Battery_Percentage", getBatteryChargeLevel());
 			if(battery_charging)
@@ -263,7 +263,6 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 							|| internal_free_space || external_free_space
 							|| package_name || network_mode || country) {
 						ability.getUITaskDispatcher().asyncDispatch(() -> {
-							try{
 								URL url = null;
 								try {
 									url = new URL(Post_Url);
@@ -303,9 +302,6 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 								} catch (IOException e1) {
 									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
 								}
-							} catch (Exception e) {
-								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Exception Occurred");
-							}
 						});
 					}
 					else
@@ -364,7 +360,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		}
 	}
 
-	private String HeapSize(Ability abl) {
+	private String HeapSize() {
 		Debug.HeapInfo heapInfo = new Debug.HeapInfo();
 		Debug.getNativeHeapInfo(heapInfo);
 		long heapSize = heapInfo.nativeHeapSize;
