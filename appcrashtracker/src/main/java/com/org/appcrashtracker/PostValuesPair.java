@@ -13,9 +13,9 @@ public class PostValuesPair {
 	{
 		return this.key;
 	}
-
 	public String getValue()
 	{
 		return this.value;
 	}
 }
+

@@ -86,82 +86,82 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	private final Ability ability;
 	Intent intent;
 	ZSONObject jObjectData;
-	String AbilityName;
+	String abilityName;
 	Class<?> name;
-	String Post_Url;
+	String postUrl;
 
-	private boolean class_name = false;
+	private boolean className = false;
 	private boolean message = false;
-	private boolean localized_message = false;
+	private boolean localizedMessage = false;
 	private boolean causes = false;
-	private boolean stack_trace = false;
-	private boolean brand_name = false;
-	private boolean device_name = false;
-	private boolean sdk_version = false;
+	private boolean stackTraceBoolean = false;
+	private boolean brandName = false;
+	private boolean deviceName = false;
+	private boolean sdkVersion = false;
 	private boolean release = false;
 	private boolean height = false;
 	private boolean width = false;
-	private boolean app_version = false;
+	private boolean appVersion = false;
 	private boolean tablet = false;
-	private boolean device_orientation = false;
-	private boolean screen_layout = false;
-	private boolean vm_heap_size = false;
-	private boolean allocated_vm_size = false;
-	private boolean vm_max_heap_size = false;
-	private boolean vm_free_heap_size = false;
-	private boolean native_allocated_size = false;
-	private boolean battery_percentage = false;
-	private boolean battery_charging = false;
-	private boolean battery_charging_via= false;
-	private boolean sd_card_status= false;
-	private boolean internal_memory_size=false;
-	private boolean external_memory_size= false;
-	private boolean internal_free_space= false;
-	private boolean external_free_space= false;
-	private boolean package_name= false;
-	private boolean network_mode= false;
+	private boolean deviceOrientation = false;
+	private boolean screenLayout = false;
+	private boolean vmHeapSize = false;
+	private boolean allocatedVmSize = false;
+	private boolean vmMaxHeapSize = false;
+	private boolean vmFreeHeapSize = false;
+	private boolean nativeAllocatedSize = false;
+	private boolean batteryPercentage = false;
+	private boolean batteryCharging = false;
+	private boolean batteryChargingVia= false;
+	private boolean sdCardStatus= false;
+	private boolean internalMemorySize=false;
+	private boolean externalMemorySize= false;
+	private boolean internalFreeSpace= false;
+	private boolean externalFreeSpace= false;
+	private boolean packageName= false;
+	private boolean networkMode= false;
 	private boolean country= false;
 
 	public ExceptionHandler(Ability ability,Class<?> name)throws NotExistException, WrongTypeException, IOException {
 		this.ability = ability;
 		this.name=name;
-		AbilityName=ability.getClass().getSimpleName();
+		abilityName=ability.getClass().getSimpleName();
 
-		this.Post_Url=ability.getString(String_url);
-		if(Post_Url.equals("default_url"))
+		this.postUrl=ability.getString(String_url);
+		if(postUrl.equals("default_url"))
 			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Post url not specified");
 		else
 		{
-			class_name = ability.getResourceManager().getElement(Boolean_class_name).getBoolean();
+			className = ability.getResourceManager().getElement(Boolean_class_name).getBoolean();
 			message = ability.getResourceManager().getElement(Boolean_message).getBoolean();
-			localized_message = ability.getResourceManager().getElement(Boolean_localized_message).getBoolean();
+			localizedMessage = ability.getResourceManager().getElement(Boolean_localized_message).getBoolean();
 			causes = ability.getResourceManager().getElement(Boolean_causes).getBoolean();
-			stack_trace = ability.getResourceManager().getElement(Boolean_stack_trace).getBoolean();
-			brand_name = ability.getResourceManager().getElement(Boolean_brand_name).getBoolean();
-			device_name = ability.getResourceManager().getElement(Boolean_device_name).getBoolean();
-			sdk_version = ability.getResourceManager().getElement(Boolean_sdk_version).getBoolean();
+			stackTraceBoolean = ability.getResourceManager().getElement(Boolean_stack_trace).getBoolean();
+			brandName = ability.getResourceManager().getElement(Boolean_brand_name).getBoolean();
+			deviceName = ability.getResourceManager().getElement(Boolean_device_name).getBoolean();
+			sdkVersion = ability.getResourceManager().getElement(Boolean_sdk_version).getBoolean();
 			release = ability.getResourceManager().getElement(Boolean_release).getBoolean();
 			height = ability.getResourceManager().getElement(Boolean_height).getBoolean();
 			width = ability.getResourceManager().getElement(Boolean_width).getBoolean();
-			app_version = ability.getResourceManager().getElement(Boolean_app_version).getBoolean();
+			appVersion = ability.getResourceManager().getElement(Boolean_app_version).getBoolean();
 			tablet = ability.getResourceManager().getElement(Boolean_tablet).getBoolean();
-			device_orientation=ability.getResourceManager().getElement(Boolean_device_orientation).getBoolean();
-			screen_layout=ability.getResourceManager().getElement(Boolean_screen_layout).getBoolean();
-			vm_heap_size = ability.getResourceManager().getElement(Boolean_vm_heap_size).getBoolean();
-			allocated_vm_size = ability.getResourceManager().getElement(Boolean_allocated_vm_size).getBoolean();
-			vm_max_heap_size = ability.getResourceManager().getElement(Boolean_vm_max_heap_size).getBoolean();
-			vm_free_heap_size = ability.getResourceManager().getElement(Boolean_vm_free_heap_size).getBoolean();
-			native_allocated_size = ability.getResourceManager().getElement(Boolean_native_allocated_size).getBoolean();
-			battery_percentage = ability.getResourceManager().getElement(Boolean_battery_percentage).getBoolean();
-			battery_charging = ability.getResourceManager().getElement(Boolean_battery_charging).getBoolean();
-			battery_charging_via = ability.getResourceManager().getElement(Boolean_battery_charging_via).getBoolean();
-			sd_card_status = ability.getResourceManager().getElement(Boolean_sd_card_status).getBoolean();
-			internal_memory_size = ability.getResourceManager().getElement(Boolean_internal_memory_size).getBoolean();
-			external_memory_size = ability.getResourceManager().getElement(Boolean_external_memory_size).getBoolean();
-			internal_free_space = ability.getResourceManager().getElement(Boolean_internal_free_space).getBoolean();
-			external_free_space = ability.getResourceManager().getElement(Boolean_external_free_space).getBoolean();
-			package_name = ability.getResourceManager().getElement(Boolean_package_name).getBoolean();
-			network_mode = ability.getResourceManager().getElement(Boolean_network_mode).getBoolean();
+			deviceOrientation=ability.getResourceManager().getElement(Boolean_device_orientation).getBoolean();
+			screenLayout=ability.getResourceManager().getElement(Boolean_screen_layout).getBoolean();
+			vmHeapSize = ability.getResourceManager().getElement(Boolean_vm_heap_size).getBoolean();
+			allocatedVmSize = ability.getResourceManager().getElement(Boolean_allocated_vm_size).getBoolean();
+			vmMaxHeapSize = ability.getResourceManager().getElement(Boolean_vm_max_heap_size).getBoolean();
+			vmFreeHeapSize = ability.getResourceManager().getElement(Boolean_vm_free_heap_size).getBoolean();
+			nativeAllocatedSize = ability.getResourceManager().getElement(Boolean_native_allocated_size).getBoolean();
+			batteryPercentage = ability.getResourceManager().getElement(Boolean_battery_percentage).getBoolean();
+			batteryCharging = ability.getResourceManager().getElement(Boolean_battery_charging).getBoolean();
+			batteryChargingVia = ability.getResourceManager().getElement(Boolean_battery_charging_via).getBoolean();
+			sdCardStatus = ability.getResourceManager().getElement(Boolean_sd_card_status).getBoolean();
+			internalMemorySize = ability.getResourceManager().getElement(Boolean_internal_memory_size).getBoolean();
+			externalMemorySize = ability.getResourceManager().getElement(Boolean_external_memory_size).getBoolean();
+			internalFreeSpace = ability.getResourceManager().getElement(Boolean_internal_free_space).getBoolean();
+			externalFreeSpace = ability.getResourceManager().getElement(Boolean_external_free_space).getBoolean();
+			packageName = ability.getResourceManager().getElement(Boolean_package_name).getBoolean();
+			networkMode = ability.getResourceManager().getElement(Boolean_network_mode).getBoolean();
 			country = ability.getResourceManager().getElement(Boolean_country).getBoolean();
 		}
 	}
@@ -175,23 +175,23 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		jObjectData = new ZSONObject();
 		try {
 			BundleInfo bi = new BundleInfo();
-			if(package_name)
+			if(packageName)
 				jObjectData.put("Package_Name", ability.getBundleName());
-			if(class_name)
-				jObjectData.put("Class", AbilityName);
+			if(className)
+				jObjectData.put("Class", abilityName);
 			if(message)
 				jObjectData.put("Message", exception.getMessage());
-			if(localized_message)
+			if(localizedMessage)
 				jObjectData.put("Localized_Message", exception.getLocalizedMessage());
 			if(causes)
 				jObjectData.put("Cause", exception.getCause());
-			if(stack_trace)
+			if(stackTraceBoolean)
 				jObjectData.put("Stack_Trace", stackTrace.toString());
-			if(brand_name)
+			if(brandName)
 				jObjectData.put("Brand", "Huawei");
-			if(device_name)
+			if(deviceName)
 				jObjectData.put("Device", DeviceInfo.getName());
-			if(sdk_version)
+			if(sdkVersion)
 				jObjectData.put("SDK",bi.getMaxSdkVersion());
 			if(release)
 				jObjectData.put("Release",bi.getVersionName());
@@ -199,41 +199,41 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 				jObjectData.put("Height", ability.getResourceManager().getDeviceCapability().height );
 			if(width)
 				jObjectData.put("Width", ability.getResourceManager().getDeviceCapability().width);
-			if(app_version)
+			if(appVersion)
 				jObjectData.put("App_Version", getAppVersion(ability));
 			if(tablet)
 				jObjectData.put("Tablet", isTablet(ability));
-			if(device_orientation)
+			if(deviceOrientation)
 				jObjectData.put("Device_Orientation", getScreenOrientation(ability));
-			if(screen_layout)
+			if(screenLayout)
 				jObjectData.put("Screen_Layout", getScreenLayout(ability));
-			if(vm_heap_size)
+			if(vmHeapSize)
 				jObjectData.put("VM_Heap_Size", ConvertSize(Runtime.getRuntime().totalMemory()));
-			if(allocated_vm_size)
+			if(allocatedVmSize)
 				jObjectData.put("Allocated_VM_Size", ConvertSize(Runtime.getRuntime().freeMemory()));
-			if(vm_max_heap_size)
+			if(vmMaxHeapSize)
 				jObjectData.put("VM_Max_Heap_Size", ConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
-			if(vm_free_heap_size)
+			if(vmFreeHeapSize)
 				jObjectData.put("VM_free_Heap_Size", ConvertSize(Runtime.getRuntime().maxMemory()));
-			if(native_allocated_size)
+			if(nativeAllocatedSize)
 				jObjectData.put("Native_Allocated_Size", HeapSize());
-			if(battery_percentage)
+			if(batteryPercentage)
 				jObjectData.put("Battery_Percentage", getBatteryChargeLevel());
-			if(battery_charging)
+			if(batteryCharging)
 				jObjectData.put("Battery_Charging_Status", getBatteryStatus());
-			if(battery_charging_via)
+			if(batteryChargingVia)
 				jObjectData.put("Battery_Charging_Via", getBatteryChargingMode());
-			if(sd_card_status)
+			if(sdCardStatus)
 				jObjectData.put("SDCard_Status", getSDCardStatus());
-			if(internal_memory_size)
+			if(internalMemorySize)
 				jObjectData.put("Internal_Memory_Size",  getTotalInternalMemorySize(ability));
-			if(external_memory_size)
+			if(externalMemorySize)
 				jObjectData.put("External_Memory_Size", getTotalExternalMemorySize(ability));
-			if(internal_free_space)
+			if(internalFreeSpace)
 				jObjectData.put("Internal_Free_Space",  getAvailableInternalMemorySize(ability));
-			if(external_free_space)
+			if(externalFreeSpace)
 				jObjectData.put("External_Free_Space",  getAvailableExternalMemorySize(ability));
-			if(network_mode)
+			if(networkMode)
 				jObjectData.put("Network_Mode", getNetworkMode(ability));
 			if(country)
 				jObjectData.put("Country", new Locale("",ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
@@ -250,22 +250,22 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 				if(isConnectingToInternet(ability))
 				{
 
-					if (class_name || message || localized_message || causes
-							|| stack_trace || brand_name || device_name
-							|| sdk_version || release  || height || width
-							|| app_version || tablet || device_orientation
-							|| screen_layout || vm_heap_size
-							|| allocated_vm_size || vm_max_heap_size
-							|| vm_free_heap_size || native_allocated_size
-							|| battery_percentage || battery_charging
-							|| battery_charging_via || sd_card_status
-							|| internal_memory_size || external_memory_size
-							|| internal_free_space || external_free_space
-							|| package_name || network_mode || country) {
+					if (className || message || localizedMessage || causes
+							|| stackTraceBoolean || brandName || deviceName
+							|| sdkVersion || release  || height || width
+							|| appVersion || tablet || deviceOrientation
+							|| screenLayout || vmHeapSize
+							|| allocatedVmSize || vmMaxHeapSize
+							|| vmFreeHeapSize || nativeAllocatedSize
+							|| batteryPercentage || batteryCharging
+							|| batteryChargingVia || sdCardStatus
+							|| internalMemorySize || externalMemorySize
+							|| internalFreeSpace || externalFreeSpace
+							|| packageName || networkMode || country) {
 						ability.getUITaskDispatcher().asyncDispatch(() -> {
 								URL url = null;
 								try {
-									url = new URL(Post_Url);
+									url = new URL(postUrl);
 								} catch (MalformedURLException e1) {
 									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "MalformedURLException");
 								}
