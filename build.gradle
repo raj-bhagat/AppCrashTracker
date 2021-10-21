@@ -55,7 +55,7 @@ checkstyle {
 
 sonarqube{
     properties{
-        property "sonar.projectKey", "AppCrashTracker"
+        property "sonar.projectKey", "applibgroup_AppCrashTracker"
         property "sonar.organization", "applibgroup"
         property "sonar.host.url", "https://sonarcloud.io"
         property "sonar.sources", "appcrashtracker"

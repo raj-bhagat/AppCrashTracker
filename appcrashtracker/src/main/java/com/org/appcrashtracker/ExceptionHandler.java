@@ -47,7 +47,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-
 import static com.example.appcrashtracker.ResourceTable.Boolean_allocated_vm_size;
 import static com.example.appcrashtracker.ResourceTable.Boolean_app_version;
 import static com.example.appcrashtracker.ResourceTable.Boolean_battery_charging;
@@ -175,68 +174,99 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		jObjectData = new ZSONObject();
 		try {
 			BundleInfo bi = new BundleInfo();
-			if(packageName)
+			if(packageName) {
 				jObjectData.put("Package_Name", ability.getBundleName());
-			if(className)
+			}
+			if(className) {
 				jObjectData.put("Class", abilityName);
-			if(message)
+			}
+			if(message) {
 				jObjectData.put("Message", exception.getMessage());
-			if(localizedMessage)
+			}
+			if(localizedMessage) {
 				jObjectData.put("Localized_Message", exception.getLocalizedMessage());
-			if(causes)
+			}
+			if(causes) {
 				jObjectData.put("Cause", exception.getCause());
-			if(stackTraceBoolean)
+			}
+			if(stackTraceBoolean) {
 				jObjectData.put("Stack_Trace", stackTrace.toString());
-			if(brandName)
+			}
+			if(brandName) {
 				jObjectData.put("Brand", "Huawei");
-			if(deviceName)
+			}
+			if(deviceName) {
 				jObjectData.put("Device", DeviceInfo.getName());
-			if(sdkVersion)
-				jObjectData.put("SDK",bi.getMaxSdkVersion());
-			if(release)
-				jObjectData.put("Release",bi.getVersionName());
-			if(height)
-				jObjectData.put("Height", ability.getResourceManager().getDeviceCapability().height );
-			if(width)
+			}
+			if(sdkVersion) {
+				jObjectData.put("SDK", bi.getMaxSdkVersion());
+			}
+			if(release) {
+				jObjectData.put("Release", bi.getVersionName());
+			}
+			if(height) {
+				jObjectData.put("Height", ability.getResourceManager().getDeviceCapability().height);
+			}
+			if(width) {
 				jObjectData.put("Width", ability.getResourceManager().getDeviceCapability().width);
-			if(appVersion)
+			}
+			if(appVersion) {
 				jObjectData.put("App_Version", getAppVersion(ability));
-			if(tablet)
+			}
+			if(tablet) {
 				jObjectData.put("Tablet", isTablet(ability));
-			if(deviceOrientation)
+			}
+			if(deviceOrientation) {
 				jObjectData.put("Device_Orientation", getScreenOrientation(ability));
-			if(screenLayout)
+			}
+			if(screenLayout) {
 				jObjectData.put("Screen_Layout", getScreenLayout(ability));
-			if(vmHeapSize)
+			}
+			if(vmHeapSize) {
 				jObjectData.put("VM_Heap_Size", ConvertSize(Runtime.getRuntime().totalMemory()));
-			if(allocatedVmSize)
+			}
+			if(allocatedVmSize) {
 				jObjectData.put("Allocated_VM_Size", ConvertSize(Runtime.getRuntime().freeMemory()));
-			if(vmMaxHeapSize)
+			}
+			if(vmMaxHeapSize) {
 				jObjectData.put("VM_Max_Heap_Size", ConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
-			if(vmFreeHeapSize)
+			}
+			if(vmFreeHeapSize) {
 				jObjectData.put("VM_free_Heap_Size", ConvertSize(Runtime.getRuntime().maxMemory()));
-			if(nativeAllocatedSize)
+			}
+			if(nativeAllocatedSize) {
 				jObjectData.put("Native_Allocated_Size", HeapSize());
-			if(batteryPercentage)
+			}
+			if(batteryPercentage) {
 				jObjectData.put("Battery_Percentage", getBatteryChargeLevel());
-			if(batteryCharging)
+			}
+			if(batteryCharging) {
 				jObjectData.put("Battery_Charging_Status", getBatteryStatus());
-			if(batteryChargingVia)
+			}
+			if(batteryChargingVia) {
 				jObjectData.put("Battery_Charging_Via", getBatteryChargingMode());
-			if(sdCardStatus)
+			}
+			if(sdCardStatus) {
 				jObjectData.put("SDCard_Status", getSDCardStatus());
-			if(internalMemorySize)
-				jObjectData.put("Internal_Memory_Size",  getTotalInternalMemorySize(ability));
-			if(externalMemorySize)
+			}
+			if(internalMemorySize) {
+				jObjectData.put("Internal_Memory_Size", getTotalInternalMemorySize(ability));
+			}
+			if(externalMemorySize) {
 				jObjectData.put("External_Memory_Size", getTotalExternalMemorySize(ability));
-			if(internalFreeSpace)
-				jObjectData.put("Internal_Free_Space",  getAvailableInternalMemorySize(ability));
-			if(externalFreeSpace)
-				jObjectData.put("External_Free_Space",  getAvailableExternalMemorySize(ability));
-			if(networkMode)
+			}
+			if(internalFreeSpace) {
+				jObjectData.put("Internal_Free_Space", getAvailableInternalMemorySize(ability));
+			}
+			if(externalFreeSpace) {
+				jObjectData.put("External_Free_Space", getAvailableExternalMemorySize(ability));
+			}
+			if(networkMode) {
 				jObjectData.put("Network_Mode", getNetworkMode(ability));
-			if(country)
-				jObjectData.put("Country", new Locale("",ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
+			}
+			if(country) {
+				jObjectData.put("Country", new Locale("", ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
+			}
 		} catch (ZSONException e) {
 			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "JSON Exception");
 		}
