@@ -6,6 +6,8 @@ import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
+import ohos.hiviewdfx.HiLog;
+import ohos.hiviewdfx.HiLogLabel;
 
 import java.io.IOException;
 
@@ -16,11 +18,11 @@ public class MainAbility extends Ability {
         try {
             ACT.init(this,MainAbility2.class);
         } catch (NotExistException e) {
-            e.printStackTrace();
+            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"Exception"), "NotExistException");
         } catch (WrongTypeException e) {
-            e.printStackTrace();
+            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"Exception"), "WrongTypeException");
         } catch (IOException e) {
-            e.printStackTrace();
+            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"Exception"), "IOException");
         }
         super.setMainRoute(MainAbilitySlice.class.getName());
     }
