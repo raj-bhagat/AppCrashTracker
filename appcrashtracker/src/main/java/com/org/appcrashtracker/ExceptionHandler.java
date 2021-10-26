@@ -292,47 +292,48 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 							|| internalMemorySize || externalMemorySize
 							|| internalFreeSpace || externalFreeSpace
 							|| packageName || networkMode || country) {
-						ability.getUITaskDispatcher().asyncDispatch(() -> {
-								URL url = null;
-								try {
-									url = new URL(postUrl);
-								} catch (MalformedURLException e1) {
-									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "MalformedURLException");
-								}
-								HttpURLConnection conn = null;
-								try {
-									conn = (HttpURLConnection) url.openConnection();
-								} catch (IOException e1) {
-									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
-								}
-								try {
-									conn.setRequestMethod("POST");
-								} catch (ProtocolException e1) {
-									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "ProtocolException");
-								}
-								conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-								conn.setDoInput(true);
-								conn.setDoOutput(true);
-								List<PostValuesPair> params1 = new ArrayList<>();
-								params1.add(new PostValuesPair("error_report", jObjectData.toString()));
-								try{
-									OutputStream os = conn.getOutputStream();
-									BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
-									writer.write(getQuery(params1));
-									writer.flush();
-									writer.close();
-									os.close();
-								}
-								catch(Exception ee)
-								{
-									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Buffer Write Exception");
-								}
-								try {
-									conn.connect();
-								} catch (IOException e1) {
-									HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
-								}
-						});
+						ability.getUITaskDispatcher().asyncDispatch((() -> {
+							URL url = null;
+							try {
+								url = new URL(postUrl);
+							} catch (MalformedURLException e1) {
+								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "MalformedURLException");
+							}
+							HttpURLConnection conn = null;
+							try {
+								conn = (HttpURLConnection)url.openConnection();
+							} catch (IOException e1) {
+								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
+							}
+							try {
+								conn.setRequestMethod("POST");
+							} catch (ProtocolException e1) {
+								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "ProtocolException");
+							}
+							conn.setRequestProperty("Content-Type", "application/json");
+							conn.setDoInput(true);
+							conn.setDoOutput(true);
+							List<PostValuesPair> params1 = new ArrayList<>();
+							params1.add(new PostValuesPair("error_report", jObjectData.toString()));
+							try{
+								HiLog.info(new HiLogLabel(HiLog.LOG_APP, 0x00202 ,"Debugger"), "checking ");
+								OutputStream os = conn.getOutputStream();
+								BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
+								writer.write(getQuery(params1));
+								writer.flush();
+								writer.close();
+								os.close();
+							}
+							catch(Exception ee)
+							{
+								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Buffer Write Exception");
+							}
+							try {
+								conn.connect();
+							} catch (IOException e1) {
+								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
+							}
+						}));
 					}
 					else
 						HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Not configured. Set configuration in string.json");

@@ -10,9 +10,9 @@
         ohos:id="$+id:text_helloworld"
         ohos:height="match_content"
         ohos:width="match_content"
-        ohos:background_element="$graphic:background_ability_main"
+        ohos:background_element="$graphic:background_ability_main2"
         ohos:layout_alignment="horizontal_center"
-        ohos:text="$string:mainability_HelloWorld"
+        ohos:text="$string:mainability2_HelloWorld"
         ohos:text_size="40vp"
         />
 

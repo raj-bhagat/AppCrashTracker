@@ -6,127 +6,127 @@
     },
     {
       "name": "class_name",
-      "value": false
+      "value": true
     },
     {
       "name": "message",
-      "value": false
+      "value": true
     },
     {
       "name": "localized_message",
-      "value": false
+      "value": true
     },
     {
       "name": "causes",
-      "value": false
+      "value": true
     },
     {
       "name": "stack_trace",
-      "value": false
+      "value": true
     },
     {
       "name": "brand_name",
-      "value": false
+      "value": true
     },
     {
       "name": "device_name",
-      "value": false
+      "value": true
     },
     {
       "name": "sdk_version",
-      "value": false
+      "value": true
     },
     {
       "name": "release",
-      "value": false
+      "value": true
     },
     {
       "name": "height",
-      "value": false
+      "value": true
     },
     {
       "name": "width",
-      "value": false
+      "value": true
     },
     {
       "name": "app_version",
-      "value": false
+      "value": true
     },
     {
       "name": "tablet",
-      "value": false
+      "value": true
     },
     {
       "name": "package_name",
-      "value": false
+      "value": true
     },
     {
       "name": "device_orientation",
-      "value": false
+      "value": true
     },
     {
       "name": "screen_layout",
-      "value": false
+      "value": true
     },
     {
       "name": "vm_heap_size",
-      "value": false
+      "value": true
     },
     {
       "name": "allocated_vm_size",
-      "value": false
+      "value": true
     },
     {
       "name": "vm_max_heap_size",
-      "value": false
+      "value": true
     },
     {
       "name": "vm_free_heap_size",
-      "value": false
+      "value": true
     },
     {
       "name": "native_allocated_size",
-      "value": false
+      "value": true
     },
     {
       "name": "battery_percentage",
-      "value": false
+      "value": true
     },
     {
       "name": "battery_charging",
-      "value": false
+      "value": true
     },
     {
       "name": "battery_charging_via",
-      "value": false
+      "value": true
     },
     {
       "name": "sd_card_status",
-      "value": false
+      "value": true
     },
     {
       "name": "internal_memory_size",
-      "value": false
+      "value": true
     },
     {
       "name": "external_memory_size",
-      "value": false
+      "value": true
     },
     {
       "name": "internal_free_space",
-      "value": false
+      "value": true
     },
     {
       "name": "external_free_space",
-      "value": false
+      "value": true
     },
     {
       "name": "network_mode",
-      "value": false
+      "value": true
     },
     {
       "name": "country",
-      "value": false
+      "value": true
     }
   ]
 }
