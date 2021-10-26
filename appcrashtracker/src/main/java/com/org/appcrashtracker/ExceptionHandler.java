@@ -88,6 +88,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	String abilityName;
 	Class<?> name;
 	String postUrl;
+	private static final String unknown = "Unknown";
 
 	private boolean className = false;
 	private boolean message = false;
@@ -387,7 +388,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			case EMERGENCY:
 				return "EMERGENCY";
 			default:
-				return "Unknown";
+				return unknown;
 		}
 	}
 
@@ -412,8 +413,8 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	}
 
 	public boolean isTablet(Context con) {
-		int tablet = con.getResourceManager().getDeviceCapability().deviceType;
-		return tablet == DeviceCapability.DEVICE_TYPE_TABLET;
+		int booltablet = con.getResourceManager().getDeviceCapability().deviceType;
+		return booltablet == DeviceCapability.DEVICE_TYPE_TABLET;
 
 	}
 
@@ -499,7 +500,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			case RESERVED:
 				return"Reserved";
 			default:
-				return"Unknown";
+				return unknown;
 		}
 	}
 
@@ -515,7 +516,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			case WIRELESS:
 				return "WIRELESS";
 			default:
-				return "Unknown";
+				return unknown;
 
 		}
 	}
@@ -536,7 +537,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 				case DISK_UNMOUNTED:
 					return "Unmounted";
 				default:
-					return "Unknown";
+					return unknown;
 			}
 		}
 	}
@@ -587,7 +588,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		}
 		else if (netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED) &&
 				netCapabilities.hasBearer(NetCapabilities.BEARER_CELLULAR)) {
-			String networkMode = "";
+			String getnetworkMode = "";
 			SimInfoManager sm = SimInfoManager.getInstance(con);
 			int max_sim = sm.getMaxSimCount();
 			for(int i=0; i<max_sim; i++){
@@ -597,31 +598,31 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 					for(SignalInformation signal : signalList){
 						int signalNetworkType = signal.getNetworkType();
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_CDMA){
-							networkMode+= " "+"Sim "+(i+1)+": CDMA";
+							getnetworkMode+= " "+"Sim "+(i+1)+": CDMA";
 						}
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_GSM){
-							networkMode+= " "+"Sim "+(i+1)+": GSM";
+							getnetworkMode+= " "+"Sim "+(i+1)+": GSM";
 						}
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_UNKNOWN){
-							networkMode+= " "+"Sim "+(i+1)+": UNKNOWN";
+							getnetworkMode+= " "+"Sim "+(i+1)+": UNKNOWN";
 						}
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_WCDMA){
-							networkMode+= " "+"Sim "+(i+1)+": WCDMA";
+							getnetworkMode+= " "+"Sim "+(i+1)+": WCDMA";
 						}
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_TDSCDMA){
-							networkMode+= " "+"Sim "+(i+1)+": TDSCDMA";
+							getnetworkMode+= " "+"Sim "+(i+1)+": TDSCDMA";
 						}
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_LTE){
-							networkMode+= " "+"Sim "+(i+1)+": LTE";
+							getnetworkMode+= " "+"Sim "+(i+1)+": LTE";
 						}
 						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_NR){
-							networkMode+= " "+"Sim "+(i+1)+": NR";
+							getnetworkMode+= " "+"Sim "+(i+1)+": NR";
 						}
 					}
 
 				}
 			}
-			return networkMode;
+			return getnetworkMode;
 		}
 		else
 		{

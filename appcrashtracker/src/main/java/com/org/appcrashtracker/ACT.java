@@ -7,7 +7,9 @@ import ohos.global.resource.WrongTypeException;
 import java.io.IOException;
 
 public class ACT {
-
+	private ACT() {
+		throw new IllegalArgumentException("ACT can't be accessed!, call {@link init(Context context, Class<?> name)}");
+	}
 	public static void init(Context context, Class<?> name) throws NotExistException, WrongTypeException, IOException {
 		Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler((Ability) context, name));
 	}

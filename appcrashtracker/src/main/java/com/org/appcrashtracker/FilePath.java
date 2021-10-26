@@ -5,6 +5,9 @@ import ohos.app.Environment;
 import java.io.File;
 
 public class FilePath {
+    private FilePath(){
+        throw new IllegalArgumentException("FilePath can't be accessed!, pass all arguments");
+    }
     public static File getInternalStorage(Context context) {
         return context.getFilesDir();
     }
