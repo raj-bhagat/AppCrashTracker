@@ -11,18 +11,18 @@ import com.org.appcrashtracker.ACT;
 import java.io.IOException;
 
 public class MainAbility extends Ability {
-    private static final String constString = "Exception";
+    private static final String CONST = "Exception";
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
         try {
             ACT.init(this, MainAbility2.class);
         } catch (NotExistException e) {
-            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 , constString), "NotExistException");
+            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 , ""+CONST), "NotExistException");
         } catch (WrongTypeException e) {
-            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 , constString), "WrongTypeException");
+            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 , ""+CONST), "WrongTypeException");
         } catch (IOException e) {
-            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 , constString), "IOException");
+            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 , ""+CONST), "IOException");
         }
         super.setMainRoute(MainAbilitySlice.class.getName());
     }

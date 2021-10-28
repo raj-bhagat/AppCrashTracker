@@ -81,6 +81,7 @@ import static com.example.appcrashtracker.ResourceTable.Boolean_width;
 import static com.example.appcrashtracker.ResourceTable.String_url;
 
 
+
 public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	private final Ability ability;
 	Intent intent;
@@ -88,7 +89,8 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 	String abilityName;
 	Class<?> name;
 	String postUrl;
-	private static final String unknown = "Unknown";
+	private static final String UNKNOWN = "Unknown";
+
 
 	private boolean className = false;
 	private boolean message = false;
@@ -273,7 +275,22 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		}
 		HiLog.info(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""), ">>>>>>>>>>>>>>>>>>"+getNetworkOperatorName(ability));
 
+        uploadToNet(ability);
 
+
+		intent = new Intent();
+		Operation operation = new Intent.OperationBuilder()
+				.withBundleName(ability.getBundleName())
+				.withAbilityName(ability.getAbilityName())
+				.build();
+		intent.setOperation(operation);
+		ability.startAbility(intent);
+		ProcessManager.kill(ProcessManager.getPid());
+		System.exit(10);
+
+	}
+
+    private void uploadToNet(Ability ability) {
 		if(ability.getBundleManager().checkPermission( ability.getBundleName() , SystemPermission.INTERNET) == 0)
 		{
 			if((ability.getBundleManager().checkPermission(ability.getBundleName() , SystemPermission.GET_NETWORK_INFO) ==0 ))
@@ -302,16 +319,18 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 							}
 							HttpURLConnection conn = null;
 							try {
+								HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "urlname"), ""+postUrl);
 								conn = (HttpURLConnection)url.openConnection();
 							} catch (IOException e1) {
 								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
 							}
 							try {
 								conn.setRequestMethod("POST");
+
 							} catch (ProtocolException e1) {
 								HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "ProtocolException");
 							}
-							conn.setRequestProperty("Content-Type", "application/json");
+							conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 							conn.setDoInput(true);
 							conn.setDoOutput(true);
 							List<PostValuesPair> params1 = new ArrayList<>();
@@ -347,20 +366,9 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		}
 		else
 			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Need to add internet permission");
+    }
 
-		intent = new Intent();
-		Operation operation = new Intent.OperationBuilder()
-				.withBundleName(ability.getBundleName())
-				.withAbilityName(ability.getAbilityName())
-				.build();
-		intent.setOperation(operation);
-		ability.startAbility(intent);
-		ProcessManager.kill(ProcessManager.getPid());
-		System.exit(10);
-
-	}
-
-	private String getNetworkOperatorName(Context con) {
+    private String getNetworkOperatorName(Context con) {
 		String operator = "";
 		SimInfoManager sm = SimInfoManager.getInstance(con);
 		int max_sim = sm.getMaxSimCount();
@@ -388,7 +396,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			case EMERGENCY:
 				return "EMERGENCY";
 			default:
-				return unknown;
+				return UNKNOWN;
 		}
 	}
 
@@ -500,7 +508,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			case RESERVED:
 				return"Reserved";
 			default:
-				return unknown;
+				return UNKNOWN;
 		}
 	}
 
@@ -516,7 +524,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 			case WIRELESS:
 				return "WIRELESS";
 			default:
-				return unknown;
+				return UNKNOWN;
 
 		}
 	}
@@ -537,7 +545,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 				case DISK_UNMOUNTED:
 					return "Unmounted";
 				default:
-					return unknown;
+					return UNKNOWN;
 			}
 		}
 	}
@@ -588,45 +596,43 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
 		}
 		else if (netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED) &&
 				netCapabilities.hasBearer(NetCapabilities.BEARER_CELLULAR)) {
-			String getnetworkMode = "";
-			SimInfoManager sm = SimInfoManager.getInstance(con);
-			int max_sim = sm.getMaxSimCount();
-			for(int i=0; i<max_sim; i++){
-				if(sm.hasSimCard(i)){
-					RadioInfoManager radioInfoManager = RadioInfoManager.getInstance(con);
-					List<SignalInformation> signalList = radioInfoManager.getSignalInfoList(i);
-					for(SignalInformation signal : signalList){
-						int signalNetworkType = signal.getNetworkType();
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_CDMA){
-							getnetworkMode+= " "+"Sim "+(i+1)+": CDMA";
-						}
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_GSM){
-							getnetworkMode+= " "+"Sim "+(i+1)+": GSM";
-						}
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_UNKNOWN){
-							getnetworkMode+= " "+"Sim "+(i+1)+": UNKNOWN";
-						}
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_WCDMA){
-							getnetworkMode+= " "+"Sim "+(i+1)+": WCDMA";
-						}
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_TDSCDMA){
-							getnetworkMode+= " "+"Sim "+(i+1)+": TDSCDMA";
-						}
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_LTE){
-							getnetworkMode+= " "+"Sim "+(i+1)+": LTE";
-						}
-						if (signalNetworkType == TelephonyConstants.NETWORK_TYPE_NR){
-							getnetworkMode+= " "+"Sim "+(i+1)+": NR";
-						}
-					}
-
-				}
-			}
-			return getnetworkMode;
+			return getRadioInfo(con);
 		}
 		else
 		{
 			return "No Network";
 		}
+	}
+	public String getRadioInfo(Context con){
+		SimInfoManager sm = SimInfoManager.getInstance(con);
+		int max_sim = sm.getMaxSimCount();
+		String simMode="";
+		for(int i=0; i<max_sim; i++){
+			if(sm.hasSimCard(i)){
+				RadioInfoManager radioInfoManager = RadioInfoManager.getInstance(con);
+				List<SignalInformation> signalList = radioInfoManager.getSignalInfoList(i);
+				for(SignalInformation signal : signalList){
+					int signalNetworkType = signal.getNetworkType();
+					switch(signalNetworkType) {
+						case TelephonyConstants.NETWORK_TYPE_CDMA:
+							return simMode + (" " + "Sim " + (i + 1) + ": CDMA");
+						case TelephonyConstants.NETWORK_TYPE_GSM:
+							return simMode + (" " + "Sim " + (i + 1) + ": GSM");
+						case TelephonyConstants.NETWORK_TYPE_UNKNOWN:
+							return simMode + (" " + "Sim " + (i + 1) + ": UNKNOWN");
+						case TelephonyConstants.NETWORK_TYPE_WCDMA:
+							return simMode + (" " + "Sim " + (i + 1) + ": WCDMA");
+						case TelephonyConstants.NETWORK_TYPE_TDSCDMA:
+							return simMode + (" " + "Sim " + (i + 1) + ": TDSCDMA");
+						case TelephonyConstants.NETWORK_TYPE_LTE:
+							return simMode + (" " + "Sim " + (i + 1) + ": LTE");
+						case TelephonyConstants.NETWORK_TYPE_NR:
+							return simMode + (" " + "Sim " + (i + 1) + ": NR");
+					}
+				}
+
+			}
+		}
+		return simMode;
 	}
 }
