@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<DependentLayout
+<DirectionalLayout
     xmlns:ohos="http://schemas.huawei.com/res/ohos"
     ohos:height="match_parent"
     ohos:width="match_parent"
@@ -15,5 +15,14 @@
         ohos:text="$string:mainability_HelloWorld"
         ohos:text_size="40vp"
         />
+    <Button
+        ohos:id="$+id:crashButton"
+        ohos:height="match_content"
+        ohos:width="match_content"
+        ohos:text="Crash Me"
+        ohos:text_size="30fp"
+        ohos:background_element="$ohos:color:id_color_activated"
+        ohos:padding="20"
+        />
 
-</DependentLayout>
+</DirectionalLayout>

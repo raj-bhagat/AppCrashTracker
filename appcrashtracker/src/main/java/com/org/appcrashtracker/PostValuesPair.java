@@ -17,4 +17,3 @@ public class PostValuesPair {
 		return this.value;
 	}
 }
-

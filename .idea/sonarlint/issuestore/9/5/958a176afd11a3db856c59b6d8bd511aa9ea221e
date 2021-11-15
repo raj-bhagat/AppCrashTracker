@@ -1,0 +1,18 @@
+
+q	java:S116}"PRename this field "LABEL" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¾´§æúÿÿÿÿ8·†ŸÒ/
+X	java:S125µ"<This block of commented-out lines of code should be removed.(Ş…Ø(8ú†ŸÒ/
+Y	java:S125È"<This block of commented-out lines of code should be removed.(çôº•8‚†ŸÒ/
+p
+java:S3776Í"RRefactor this method to reduce its Cognitive Complexity from 31 to the 15 allowed.(÷ïŒ8„†ŸÒ/
+Y	java:S125Í"<This block of commented-out lines of code should be removed.(÷ïŒ8ˆ†ŸÒ/
+^	java:S125ã"<This block of commented-out lines of code should be removed.(»ªÕÚúÿÿÿÿ8†ŸÒ/
+^	java:S125ä"<This block of commented-out lines of code should be removed.(È–ëÌüÿÿÿÿ8’†ŸÒ/
+Y	java:S125å"<This block of commented-out lines of code should be removed.(¼èÆ”8“†ŸÒ/
+^	java:S125ƒ"<This block of commented-out lines of code should be removed.(ğÓâ€ıÿÿÿÿ8š†ŸÒ/
+Y	java:S125„"<This block of commented-out lines of code should be removed.(²ÌıÀ8›†ŸÒ/
+p
+java:S3776Í"RRefactor this method to reduce its Cognitive Complexity from 50 to the 15 allowed.(ˆ½¥€8¿†ŸÒ/
+p
+java:S1192²"RDefine a constant instead of duplicating this literal "Inside Exception " 3 times.(‚—Ûÿ8¶‘†ŸÒ/
+:
+java:S1643´"Use a StringBuilder instead.(½ÈÔÁ8Á‘†ŸÒ/

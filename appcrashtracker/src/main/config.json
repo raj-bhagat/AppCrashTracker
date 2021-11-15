@@ -10,6 +10,14 @@
   "deviceConfig": {
   },
   "module": {
+    "reqPermissions": [
+      {
+        "name": "ohos.permission.INTERNET"
+      },
+      {
+        "name": "ohos.permission.GET_NETWORK_INFO"
+      }
+    ],
     "package": "com.example.appcrashtracker",
     "deviceType": [
       "phone",
