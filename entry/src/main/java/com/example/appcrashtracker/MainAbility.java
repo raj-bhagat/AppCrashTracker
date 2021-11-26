@@ -4,6 +4,7 @@ import com.example.appcrashtracker.slice.MainAbilitySlice;
 import com.org.appcrashtracker.ACT;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
+import ohos.bundle.IBundleManager;
 import ohos.global.resource.NotExistException;
 import ohos.global.resource.WrongTypeException;
 import ohos.hiviewdfx.HiLog;
@@ -16,6 +17,12 @@ public class MainAbility extends Ability {
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
+        if (verifySelfPermission("ohos.permission.WRITE_USER_STORAGE") != IBundleManager.PERMISSION_GRANTED) {
+            if (canRequestPermission("ohos.permission.WRITE_USER_STORAGE")) {
+                requestPermissionsFromUser(
+                        new String[]{"ohos.permission.WRITE_USER_STORAGE"}, 101);
+            }
+        }
         try {
             ACT.init(this, MainAbility2.class);
         } catch (NotExistException e) {

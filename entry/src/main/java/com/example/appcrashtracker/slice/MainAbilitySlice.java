@@ -5,6 +5,7 @@ import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.Button;
 import ohos.agp.components.Component;
+import ohos.bundle.IBundleManager;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 
@@ -19,12 +20,16 @@ public class MainAbilitySlice extends AbilitySlice {
         bt.setClickedListener(new Component.ClickedListener() {
             @Override
             public void onClick(Component component) {
-                HiLog.debug(new HiLogLabel(HiLog.LOG_APP,
-                                0x00201,
-                                "" + CONST),
-                        Integer.parseInt("asdf") + "");
+                crashme();
             }
         });
+    }
+
+    private void crashme() {
+        HiLog.debug(new HiLogLabel(HiLog.LOG_APP,
+                        0x00201,
+                        "" + CONST),
+                Integer.parseInt("asdf") + "");
     }
 
     @Override

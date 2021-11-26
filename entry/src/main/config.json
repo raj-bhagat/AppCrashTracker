@@ -7,7 +7,13 @@
       "name": "1.0.0"
     }
   },
-  "deviceConfig": {},
+  "deviceConfig": {
+    "default": {
+      "network": {
+        "cleartextTraffic": true,
+      }
+    }
+  },
   "module": {
     "reqPermissions": [
       {
@@ -15,6 +21,9 @@
       },
       {
         "name": "ohos.permission.GET_NETWORK_INFO"
+      },
+      {
+        "name": "ohos.permission.WRITE_USER_STORAGE"
       }
     ],
     "package": "com.example.appcrashtracker",
