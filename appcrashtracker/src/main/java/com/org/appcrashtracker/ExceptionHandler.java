@@ -3,7 +3,6 @@ package com.org.appcrashtracker;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
 import ohos.aafwk.content.Operation;
-import ohos.agp.window.dialog.ToastDialog;
 import ohos.app.Context;
 import ohos.app.Environment;
 import ohos.batterymanager.BatteryInfo;
@@ -11,11 +10,10 @@ import ohos.bundle.BundleInfo;
 import ohos.bundle.IBundleManager;
 import ohos.data.usage.MountState;
 import ohos.data.usage.StatVfs;
-import ohos.eventhandler.EventHandler;
-import ohos.eventhandler.EventRunner;
 import ohos.global.configuration.Configuration;
 import ohos.global.configuration.DeviceCapability;
 import ohos.global.resource.NotExistException;
+import ohos.global.resource.ResourceManager;
 import ohos.global.resource.WrongTypeException;
 import ohos.hiviewdfx.Debug;
 import ohos.hiviewdfx.HiChecker;
@@ -23,9 +21,7 @@ import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.net.NetCapabilities;
 import ohos.net.NetManager;
-import ohos.os.ProcessManager;
 import ohos.rpc.RemoteException;
-import ohos.security.SystemPermission;
 import ohos.system.DeviceInfo;
 import ohos.telephony.RadioInfoManager;
 import ohos.telephony.SignalInformation;
@@ -35,48 +31,12 @@ import ohos.utils.zson.ZSONException;
 import ohos.utils.zson.ZSONObject;
 
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
 
-import static com.example.appcrashtracker.ResourceTable.Boolean_allocated_vm_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_app_version;
-import static com.example.appcrashtracker.ResourceTable.Boolean_battery_charging;
-import static com.example.appcrashtracker.ResourceTable.Boolean_battery_charging_via;
-import static com.example.appcrashtracker.ResourceTable.Boolean_battery_percentage;
-import static com.example.appcrashtracker.ResourceTable.Boolean_brand_name;
-import static com.example.appcrashtracker.ResourceTable.Boolean_causes;
-import static com.example.appcrashtracker.ResourceTable.Boolean_class_name;
-import static com.example.appcrashtracker.ResourceTable.Boolean_country;
-import static com.example.appcrashtracker.ResourceTable.Boolean_device_name;
-import static com.example.appcrashtracker.ResourceTable.Boolean_device_orientation;
-import static com.example.appcrashtracker.ResourceTable.Boolean_external_free_space;
-import static com.example.appcrashtracker.ResourceTable.Boolean_external_memory_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_height;
-import static com.example.appcrashtracker.ResourceTable.Boolean_internal_free_space;
-import static com.example.appcrashtracker.ResourceTable.Boolean_internal_memory_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_localized_message;
-import static com.example.appcrashtracker.ResourceTable.Boolean_message;
-import static com.example.appcrashtracker.ResourceTable.Boolean_native_allocated_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_network_mode;
-import static com.example.appcrashtracker.ResourceTable.Boolean_package_name;
-import static com.example.appcrashtracker.ResourceTable.Boolean_release;
-import static com.example.appcrashtracker.ResourceTable.Boolean_screen_layout;
-import static com.example.appcrashtracker.ResourceTable.Boolean_sd_card_status;
-import static com.example.appcrashtracker.ResourceTable.Boolean_sdk_version;
-import static com.example.appcrashtracker.ResourceTable.Boolean_stack_trace;
-import static com.example.appcrashtracker.ResourceTable.Boolean_tablet;
-import static com.example.appcrashtracker.ResourceTable.Boolean_vm_free_heap_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_vm_heap_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_vm_max_heap_size;
-import static com.example.appcrashtracker.ResourceTable.Boolean_width;
-import static com.example.appcrashtracker.ResourceTable.String_url;
-
+import static com.example.appcrashtracker.ResourceTable.*;
 
 
 public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
@@ -120,71 +80,64 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 	private boolean packageName= false;
 	private boolean networkMode= false;
 	private boolean country= false;
-	HiLogLabel LABEL = new HiLogLabel(HiLog.LOG_APP, 0x00201 , getClass().getName());
+	HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x00201 , getClass().getName());
 
 	public ExceptionHandler(Ability ability,Class<?> name)throws NotExistException, WrongTypeException, IOException {
 		this.ability = ability;
 		this.name=name;
 		abilityName=ability.getClass().getSimpleName();
-		HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Entered method");
-
+        ResourceManager resources = ability.getResourceManager();
 		this.postUrl=ability.getString(String_url);
 		if(postUrl.equals("default_url"))
-			HiLog.error(LABEL, "Post url not specified");
+			HiLog.error(label, "Post url not specified");
 		else
 		{
-			className = ability.getResourceManager().getElement(Boolean_class_name).getBoolean();
-			message = ability.getResourceManager().getElement(Boolean_message).getBoolean();
-			localizedMessage = ability.getResourceManager().getElement(Boolean_localized_message).getBoolean();
-			causes = ability.getResourceManager().getElement(Boolean_causes).getBoolean();
-			stackTraceBoolean = ability.getResourceManager().getElement(Boolean_stack_trace).getBoolean();
-			brandName = ability.getResourceManager().getElement(Boolean_brand_name).getBoolean();
-			deviceName = ability.getResourceManager().getElement(Boolean_device_name).getBoolean();
-			sdkVersion = ability.getResourceManager().getElement(Boolean_sdk_version).getBoolean();
-			release = ability.getResourceManager().getElement(Boolean_release).getBoolean();
-			height = ability.getResourceManager().getElement(Boolean_height).getBoolean();
-			width = ability.getResourceManager().getElement(Boolean_width).getBoolean();
-			appVersion = ability.getResourceManager().getElement(Boolean_app_version).getBoolean();
-			tablet = ability.getResourceManager().getElement(Boolean_tablet).getBoolean();
-			deviceOrientation=ability.getResourceManager().getElement(Boolean_device_orientation).getBoolean();
-			screenLayout=ability.getResourceManager().getElement(Boolean_screen_layout).getBoolean();
-			vmHeapSize = ability.getResourceManager().getElement(Boolean_vm_heap_size).getBoolean();
-			allocatedVmSize = ability.getResourceManager().getElement(Boolean_allocated_vm_size).getBoolean();
-			vmMaxHeapSize = ability.getResourceManager().getElement(Boolean_vm_max_heap_size).getBoolean();
-			vmFreeHeapSize = ability.getResourceManager().getElement(Boolean_vm_free_heap_size).getBoolean();
-			nativeAllocatedSize = ability.getResourceManager().getElement(Boolean_native_allocated_size).getBoolean();
-			batteryPercentage = ability.getResourceManager().getElement(Boolean_battery_percentage).getBoolean();
-			batteryCharging = ability.getResourceManager().getElement(Boolean_battery_charging).getBoolean();
-			batteryChargingVia = ability.getResourceManager().getElement(Boolean_battery_charging_via).getBoolean();
-			sdCardStatus = ability.getResourceManager().getElement(Boolean_sd_card_status).getBoolean();
-			internalMemorySize = ability.getResourceManager().getElement(Boolean_internal_memory_size).getBoolean();
-			externalMemorySize = ability.getResourceManager().getElement(Boolean_external_memory_size).getBoolean();
-			internalFreeSpace = ability.getResourceManager().getElement(Boolean_internal_free_space).getBoolean();
-			externalFreeSpace = ability.getResourceManager().getElement(Boolean_external_free_space).getBoolean();
-			packageName = ability.getResourceManager().getElement(Boolean_package_name).getBoolean();
-			networkMode = ability.getResourceManager().getElement(Boolean_network_mode).getBoolean();
-			country = ability.getResourceManager().getElement(Boolean_country).getBoolean();
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "packagename"+packageName);
+			className = resources.getElement(Boolean_class_name).getBoolean();
+			message = resources.getElement(Boolean_message).getBoolean();
+			localizedMessage = resources.getElement(Boolean_localized_message).getBoolean();
+			causes = resources.getElement(Boolean_causes).getBoolean();
+			stackTraceBoolean = resources.getElement(Boolean_stack_trace).getBoolean();
+			brandName = resources.getElement(Boolean_brand_name).getBoolean();
+			deviceName = resources.getElement(Boolean_device_name).getBoolean();
+			sdkVersion = resources.getElement(Boolean_sdk_version).getBoolean();
+			release = resources.getElement(Boolean_release).getBoolean();
+			height = resources.getElement(Boolean_height).getBoolean();
+			width = resources.getElement(Boolean_width).getBoolean();
+			appVersion = resources.getElement(Boolean_app_version).getBoolean();
+			tablet = resources.getElement(Boolean_tablet).getBoolean();
+			deviceOrientation=resources.getElement(Boolean_device_orientation).getBoolean();
+			screenLayout=resources.getElement(Boolean_screen_layout).getBoolean();
+			vmHeapSize = resources.getElement(Boolean_vm_heap_size).getBoolean();
+			allocatedVmSize = resources.getElement(Boolean_allocated_vm_size).getBoolean();
+			vmMaxHeapSize = resources.getElement(Boolean_vm_max_heap_size).getBoolean();
+			vmFreeHeapSize = resources.getElement(Boolean_vm_free_heap_size).getBoolean();
+			nativeAllocatedSize = resources.getElement(Boolean_native_allocated_size).getBoolean();
+			batteryPercentage = resources.getElement(Boolean_battery_percentage).getBoolean();
+			batteryCharging = resources.getElement(Boolean_battery_charging).getBoolean();
+			batteryChargingVia = resources.getElement(Boolean_battery_charging_via).getBoolean();
+			sdCardStatus = resources.getElement(Boolean_sd_card_status).getBoolean();
+			internalMemorySize = resources.getElement(Boolean_internal_memory_size).getBoolean();
+			externalMemorySize = resources.getElement(Boolean_external_memory_size).getBoolean();
+			internalFreeSpace = resources.getElement(Boolean_internal_free_space).getBoolean();
+			externalFreeSpace = resources.getElement(Boolean_external_free_space).getBoolean();
+			packageName = resources.getElement(Boolean_package_name).getBoolean();
+			networkMode = resources.getElement(Boolean_network_mode).getBoolean();
+			country = resources.getElement(Boolean_country).getBoolean();
 		}
 	}
-	@SuppressWarnings("deprecation")
+
 	public void uncaughtException(Thread thread, Throwable exception)  {
 		StringWriter stackTrace = new StringWriter();
 		exception.printStackTrace(new PrintWriter(stackTrace));
 
 		HiChecker.removeAllRules();
-		HiLog.debug(LABEL, "Inside Exception "+packageName);
 		jObjectData = new ZSONObject();
 		try {
-				populateJSONObject(jObjectData, exception);//, stackTrace);
-			HiLog.debug(LABEL, "Exit after writing json files");
+				populateJSONObject(jObjectData, exception, stackTrace);
 		} catch (ZSONException e) {
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "JSON Exception");
+			HiLog.error(label, "JSON Exception");
 		}
 		HiLog.info(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""), ">>>>>>>>>>>>>>>>>>"+getNetworkOperatorName(ability));
-		HiLog.debug(LABEL, "Entering upload to net");
-
-		//uploadToNet();
 		writeToDocuments(ability, jObjectData);
 
 		intent = new Intent();
@@ -194,37 +147,21 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 				.build();
 		intent.setOperation(operation);
 		ability.startAbility(intent);
-		//ProcessManager.kill(ProcessManager.getPid());
-		//System.exit(10);
-
-	}
+    }
 
 	private void writeToDocuments(Context context, ZSONObject data) {
 		File storageFolder = context.getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-		HiLog.debug(LABEL," "+storageFolder.getAbsolutePath());
 		File file = new File(storageFolder, "crash.txt");
-		FileOutputStream fileOutputStream = null;
-		try {
-			fileOutputStream = new FileOutputStream(file);
-			fileOutputStream.write(data.toString().getBytes());
+		try( FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+		    fileOutputStream.write(data.toString().getBytes());
 		} catch (Exception e) {
-			e.printStackTrace();
-			HiLog.debug(LABEL,"File Error");
-		} finally {
-			if (fileOutputStream != null) {
-				try {
-					fileOutputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			HiLog.error(label, "Text file Error ");
 		}
 	}
 
 
-	private void populateJSONObject(ZSONObject jObjectData, Throwable exception){// stackTrace) {
+	private void populateJSONObject(ZSONObject jObjectData, Throwable exception,StringWriter stackTrace) {
 		BundleInfo bi = new BundleInfo();
-		HiLog.debug(LABEL, "Inside Exception "+packageName +" # populateJSONObject");
 		if(packageName) {
 			jObjectData.put("Package_Name", ability.getBundleName());
 		}
@@ -233,217 +170,90 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 		}
 		if(message) {
 			jObjectData.put("Message", exception.getMessage());
-			HiLog.debug(LABEL,"Message: "+exception.getMessage() );
 		}
 		if(localizedMessage) {
 			jObjectData.put("Localized_Message", exception.getLocalizedMessage());
-            HiLog.debug(LABEL,"Localized: message"+exception.getLocalizedMessage());
 		}
 		if(causes) {
 			jObjectData.put("Cause", exception.getCause());
-            HiLog.debug(LABEL,"Causes: "+exception.getCause());
 		}
 		if(stackTraceBoolean) {
-			//stackTrace.write("java.lang.NumberFormatException: For input string: \"asdf\"\n\tat java.lang.Integer.parseInt(Integer.java:615)\n\tat java.lang.Integer.parseInt(Integer.java:650)");
-			jObjectData.put("Stack_Trace", "java.lang.NumberFormatException");//stackTrace.toString());
-            HiLog.debug(LABEL,"Stacktrace: "+"java.lang.NumberFormatException");//stackTrace.toString());
+			jObjectData.put("Stack_Trace", stackTrace.toString());
 		}
 		if(brandName) {
 			jObjectData.put("Brand", "Huawei");
 		}
 		if(deviceName) {
 			jObjectData.put("Device", DeviceInfo.getName());
-            HiLog.debug(LABEL,"Device Name: "+DeviceInfo.getName());
 		}
 		if(sdkVersion) {
 			jObjectData.put("SDK", bi.getMaxSdkVersion()+"");
-            HiLog.debug(LABEL,"SDK version: "+bi.getMaxSdkVersion()+"");
 		}
 		if(release) {
 			jObjectData.put("Release", bi.getVersionName());
-            HiLog.debug(LABEL,"Release: "+bi.getVersionName());
 		}
 		if(height) {
 			jObjectData.put("Height", ability.getResourceManager().getDeviceCapability().height+"");
-            HiLog.debug(LABEL,"device height: "+ability.getResourceManager().getDeviceCapability().height+"");
 		}
 		if(width) {
 			jObjectData.put("Width", ability.getResourceManager().getDeviceCapability().width);
-            HiLog.debug(LABEL,"Device width: "+ability.getResourceManager().getDeviceCapability().width);
 		}
 		if(appVersion) {
 			jObjectData.put("App_Version", getAppVersion(ability));
-            HiLog.debug(LABEL,"App version: "+getAppVersion(ability));
 		}
 		if(tablet) {
 			jObjectData.put("Tablet", " "+isTablet(ability));
-            HiLog.debug(LABEL,"istablet"+isTablet(ability));
 		}
 		if(deviceOrientation) {
 			jObjectData.put("Device_Orientation", getScreenOrientation(ability));
-            HiLog.debug(LABEL,"orientation: "+getScreenOrientation(ability));
 		}
 		if(screenLayout) {
 			jObjectData.put("Screen_Layout", getScreenLayout(ability));
-            HiLog.debug(LABEL,"Screen lauout: "+getScreenLayout(ability));
 		}
 		if(vmHeapSize) {
 			jObjectData.put("VM_Heap_Size", getConvertSize(Runtime.getRuntime().totalMemory()));
-            HiLog.debug(LABEL,"VM size: "+getConvertSize(Runtime.getRuntime().totalMemory()));
 		}
 		if(allocatedVmSize) {
 			jObjectData.put("Allocated_VM_Size", getConvertSize(Runtime.getRuntime().freeMemory()));
-            HiLog.debug(LABEL,"Allocated VM size: "+getConvertSize(Runtime.getRuntime().freeMemory()));
 		}
 		if(vmMaxHeapSize) {
 			jObjectData.put("VM_Max_Heap_Size", getConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
-            HiLog.debug(LABEL,"Max VM size: "+getConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
 		}
 		if(vmFreeHeapSize) {
 			jObjectData.put("VM_free_Heap_Size", getConvertSize(Runtime.getRuntime().maxMemory()));
-            HiLog.debug(LABEL,"Free VM heap size: "+getConvertSize(Runtime.getRuntime().maxMemory()));
 		}
 		if(nativeAllocatedSize) {
 			jObjectData.put("Native_Allocated_Size", getHeapSize());
-            HiLog.debug(LABEL,"Heapsize: "+getHeapSize());
 		}
 		if(batteryPercentage) {
 			jObjectData.put("Battery_Percentage", getBatteryChargeLevel());
-            HiLog.debug(LABEL,"Battery percentage: "+getBatteryChargeLevel());
 		}
 		if(batteryCharging) {
 			jObjectData.put("Battery_Charging_Status", getBatteryStatus());
-            HiLog.debug(LABEL,"Battery status: "+getBatteryStatus());
 		}
 		if(batteryChargingVia) {
 			jObjectData.put("Battery_Charging_Via", getBatteryChargingMode());
-            HiLog.debug(LABEL,"Charging mode: "+getBatteryChargingMode());
 		}
 		if(sdCardStatus) {
 			jObjectData.put("SDCard_Status", getSDCardStatus());
-            HiLog.debug(LABEL,"SD card status: "+getSDCardStatus());
 		}
 		if(internalMemorySize) {
 			jObjectData.put("Internal_Memory_Size", getTotalInternalMemorySize(ability));
-            HiLog.debug(LABEL,"Total internal memory: "+getTotalInternalMemorySize(ability));
 		}
 		if(externalMemorySize) {
 			jObjectData.put("External_Memory_Size", getTotalExternalMemorySize(ability));
-            HiLog.debug(LABEL,"Total External Memory: "+getTotalExternalMemorySize(ability));
 		}
 		if(internalFreeSpace) {
 			jObjectData.put("Internal_Free_Space", getAvailableInternalMemorySize(ability));
-            HiLog.debug(LABEL,"Free Internal Memory: "+getAvailableInternalMemorySize(ability));
 		}
 		if(externalFreeSpace) {
 			jObjectData.put("External_Free_Space", getAvailableExternalMemorySize(ability));
-            HiLog.debug(LABEL,"Free External Memory: "+getAvailableExternalMemorySize(ability));
 		}
 		if(networkMode) {
 			jObjectData.put("Network_Mode", getNetworkMode(ability));
-            HiLog.debug(LABEL,"NetworkMode: "+getNetworkMode(ability));
 		}
 		if(country) {
 			jObjectData.put("Country", new Locale("", ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
-            HiLog.debug(LABEL,""+new Locale("Country: ", ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
-		}
-		HiLog.debug(LABEL, "Inside Exception "+packageName +" # populateJSONObject # jObjectData = "+jObjectData.toString());
-	}
-
-	private void uploadToNet() {
-		if(ability.getBundleManager().checkPermission( ability.getBundleName() , SystemPermission.INTERNET) == 0)
-		{
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"1 "+ability.getBundleName()), "Internet Permission");
-			if((ability.getBundleManager().checkPermission(ability.getBundleName() , SystemPermission.GET_NETWORK_INFO) ==0 ))
-			{
-				HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"1 "+ability.getBundleName()), "NetworkInfo Permission");
-				if(isConnectingToInternet(ability))
-				{
-					HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"1 "+ability.getBundleName()), "Is connected to Internet");
-					if (className || message || localizedMessage || causes
-							|| stackTraceBoolean || brandName || deviceName
-							|| sdkVersion || release  || height || width
-							|| appVersion || tablet || deviceOrientation
-							|| screenLayout || vmHeapSize
-							|| allocatedVmSize || vmMaxHeapSize
-							|| vmFreeHeapSize || nativeAllocatedSize
-							|| batteryPercentage || batteryCharging
-							|| batteryChargingVia || sdCardStatus
-							|| internalMemorySize || externalMemorySize
-							|| internalFreeSpace || externalFreeSpace
-							|| packageName || networkMode || country) {
-						makeHttpConnectionAndUpload();
-						/*HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "URL inside if statement  "+postUrl);
-						EventHandler handler = new EventHandler(EventRunner.create());
-						handler.postTask(() -> makeHttpConnectionAndUpload());*/
-					}
-					else
-						HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Not configured. Set configuration in string.json");
-				}
-				else
-					HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Network not found");
-			}
-			else
-				HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Need to add Access network state permission");
-		}
-		else
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Need to add internet permission");
-    }
-
-    private void makeHttpConnectionAndUpload(){
-		URL url = null;
-		try {
-			url = new URL(postUrl);
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "URL "+url);
-		} catch (MalformedURLException e1) {
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "MalformedURLException");
-		}
-		HttpURLConnection conn = null;
-		try {
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Test"), "Before connection");
-			conn = (HttpURLConnection)url.openConnection();
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Conn Debug"), "openConnection ");
-
-		} catch (IOException e1) {
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Conn Debug"), "Connection error from url");
-		}
-		try {
-			conn.setRequestMethod("POST");
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Post: "), "after connection post");
-
-		} catch (ProtocolException e1) {
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "ProtocolException");
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Post Debug"), "Post Error");
-		}
-		HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Sending request");
-		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		conn.setDoInput(true);
-		conn.setDoOutput(true);
-		List<PostValuesPair> params1 = new ArrayList<>();
-		params1.add(new PostValuesPair("error_report", jObjectData.toString()));
-		HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Params1: "+params1);
-		try{
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,"Debugger"), "checking ");
-			OutputStream os = conn.getOutputStream();
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, StandardCharsets.UTF_8));
-			writer.write(getQuery(params1));
-			writer.flush();
-			writer.close();
-			os.close();
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "writting files");
-		}
-		catch(Exception ee)
-		{
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Buffer Write Exception");
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Buffer debug"), "Buffer writter error");
-		}
-		try {
-			conn.connect();
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Sending files to server");
-		} catch (IOException e1) {
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "IOException");
-			HiLog.debug(new HiLogLabel(HiLog.LOG_APP, 0x00201 , "Connect Debug"), "Could not Connect");
 		}
 	}
 
@@ -493,7 +303,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 		try {
 			info = manager.getBundleInfo(con.getBundleName(), 0);
 		} catch ( RemoteException e) {
-			HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201 ,""+ability.getBundleName()), "Name not found Exception");
+			HiLog.error(label, "Name not found Exception");
 			return "Version not found";
 		}
 		return info.getVersionName();
@@ -505,31 +315,6 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 
 	}
 
-	public String getQuery(List<PostValuesPair> params) throws UnsupportedEncodingException
-	{
-		StringBuilder result = new StringBuilder();
-		boolean first = true;
-
-		for (PostValuesPair pair : params)
-		{
-			if (first)
-				first = false;
-			else
-				result.append("&");
-
-			result.append(URLEncoder.encode(pair.getKey(), "UTF-8"));
-			result.append("=");
-			result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
-		}
-
-		return result.toString();
-	}
-
-	public boolean isConnectingToInternet(Context con){
-		NetManager netManager = NetManager.getInstance(con);
-		NetCapabilities netCapabilities = netManager.getNetCapabilities(netManager.getDefaultNet());
-		return netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED);
-	}
 
 	public String getScreenOrientation(Ability abl)
 	{
