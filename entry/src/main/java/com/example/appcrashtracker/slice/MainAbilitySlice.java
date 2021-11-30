@@ -17,12 +17,7 @@ public class MainAbilitySlice extends AbilitySlice {
         super.setUIContent(ResourceTable.Layout_ability_main);
         Button bt =(Button)findComponentById(ResourceTable.Id_crashButton);
 
-        bt.setClickedListener(new Component.ClickedListener() {
-            @Override
-            public void onClick(Component component) {
-                crashme();
-            }
-        });
+        bt.setClickedListener(component -> crashme());
     }
 
     private void crashme() {

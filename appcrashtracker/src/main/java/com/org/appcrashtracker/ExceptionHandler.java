@@ -258,16 +258,16 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 	}
 
     private String getNetworkOperatorName(Context con) {
-		String operator = "";
+		StringBuilder operator = new StringBuilder();
 		SimInfoManager sm = SimInfoManager.getInstance(con);
 		int maxSim = sm.getMaxSimCount();
 		for(int i=0; i<maxSim; i++) {
 			if (sm.hasSimCard(i)) {
 				RadioInfoManager radioInfoManager = RadioInfoManager.getInstance(con);
-				operator+= " "+"Sim "+(i+1)+": "+radioInfoManager.getOperatorName(i);
+				operator.append(" " + "Sim ").append(i + 1).append(": ").append(radioInfoManager.getOperatorName(i));
 			}
 		}
-		return operator;
+		return operator.toString();
 	}
 
 	private String getBatteryChargeLevel() {

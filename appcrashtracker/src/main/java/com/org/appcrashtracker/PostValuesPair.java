@@ -1,7 +1,8 @@
 package com.org.appcrashtracker;
 
 public class PostValuesPair {
-	String key="",value="";
+	String key="";
+	String value="";
 
 	public PostValuesPair(String key, String value) {
 		this.key=key;

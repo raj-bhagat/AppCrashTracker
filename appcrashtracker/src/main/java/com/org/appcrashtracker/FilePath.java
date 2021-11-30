@@ -2,9 +2,13 @@ package com.org.appcrashtracker;
 
 import ohos.app.Context;
 import ohos.app.Environment;
+
 import java.io.File;
 
 public class FilePath {
+    private FilePath(){
+        throw new IllegalArgumentException("File Path");
+    }
     public static File getInternalStorage(Context context) {
         return context.getFilesDir();
     }

@@ -14,14 +14,13 @@ import java.io.IOException;
 
 public class MainAbility extends Ability {
     private static final String CONST = "Exception";
+    private String writePermission =  "ohos.permission.WRITE_USER_STORAGE";
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
-        if (verifySelfPermission("ohos.permission.WRITE_USER_STORAGE") != IBundleManager.PERMISSION_GRANTED) {
-            if (canRequestPermission("ohos.permission.WRITE_USER_STORAGE")) {
+        if (verifySelfPermission(writePermission) != IBundleManager.PERMISSION_GRANTED && canRequestPermission(writePermission)) {
                 requestPermissionsFromUser(
-                        new String[]{"ohos.permission.WRITE_USER_STORAGE"}, 101);
-            }
+                        new String[]{writePermission}, 101);
         }
         try {
             ACT.init(this, MainAbility2.class);
