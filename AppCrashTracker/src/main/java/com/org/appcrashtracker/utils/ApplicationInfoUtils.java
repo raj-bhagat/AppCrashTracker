@@ -1,4 +1,3 @@
-package com.org.appcrashtracker.utils;
 /*
  * Copyright (C) 2020-21 Application Library Engineering Group
  *
@@ -14,6 +13,8 @@ package com.org.appcrashtracker.utils;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.org.appcrashtracker.utils;
+
 import ohos.aafwk.ability.Ability;
 import ohos.app.Context;
 import ohos.bundle.BundleInfo;
