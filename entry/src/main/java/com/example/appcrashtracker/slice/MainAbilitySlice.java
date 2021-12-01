@@ -1,21 +1,21 @@
 package com.example.appcrashtracker.slice;
 
-import com.example.appcrashtracker.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
 import ohos.agp.components.Button;
-import ohos.agp.components.Component;
-import ohos.bundle.IBundleManager;
 import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
+import com.example.appcrashtracker.ResourceTable;
 
+/** This is the main ability slice. */
 public class MainAbilitySlice extends AbilitySlice {
     private static final String CONST = "Exception";
+
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
         super.setUIContent(ResourceTable.Layout_ability_main);
-        Button bt =(Button)findComponentById(ResourceTable.Id_crashButton);
+        Button bt = (Button) findComponentById(ResourceTable.Id_crashButton);
 
         bt.setClickedListener(component -> crashme());
     }

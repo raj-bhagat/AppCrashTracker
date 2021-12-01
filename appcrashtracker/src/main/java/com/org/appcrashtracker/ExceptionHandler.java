@@ -1,5 +1,6 @@
 package com.org.appcrashtracker;
 
+import static com.example.appcrashtracker.ResourceTable.*;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
 import ohos.aafwk.content.Operation;
@@ -29,15 +30,14 @@ import ohos.telephony.SimInfoManager;
 import ohos.telephony.TelephonyConstants;
 import ohos.utils.zson.ZSONException;
 import ohos.utils.zson.ZSONObject;
-
-import java.io.*;
-import java.net.URLEncoder;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
-
-import static com.example.appcrashtracker.ResourceTable.*;
-
 
 public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandler {
 	private final Ability ability;
@@ -46,9 +46,8 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
 	String abilityName;
 	Class<?> name;
 	String postUrl;
+
 	private static final String UNKNOWN = "Unknown";
-
-
 	private boolean className = false;
 	private boolean message = false;
 	private boolean localizedMessage = false;
