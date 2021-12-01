@@ -1,9 +1,10 @@
 package com.example.appcrashtracker.slice;
 
-import com.example.appcrashtracker.ResourceTable;
 import ohos.aafwk.ability.AbilitySlice;
 import ohos.aafwk.content.Intent;
+import com.example.appcrashtracker.ResourceTable;
 
+/** This is main ability sclice for sample data. */
 public class MainAbility2Slice extends AbilitySlice {
     @Override
     public void onStart(Intent intent) {
