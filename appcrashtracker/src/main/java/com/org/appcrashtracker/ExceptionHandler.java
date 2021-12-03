@@ -29,7 +29,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
     private final Ability ability;
     private ZSONObject jObjectData;
     private String abilityName;
-    private final HiLogLabel LABEL = new HiLogLabel(HiLog.LOG_APP, 0x00201, getClass().getName());
+    private final HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x00201, getClass().getName());
     private boolean className = false;
     private boolean message = false;
     private boolean localizedMessage = false;
@@ -68,7 +68,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         ResourceManager resources = ability.getResourceManager();
         String postUrl = ability.getString(String_url);
         if (postUrl.equals("default_url"))
-            HiLog.error(LABEL, "Post url not specified");
+            HiLog.error(label, "Post url not specified");
         else {
             className = resources.getElement(Boolean_class_name).getBoolean();
             message = resources.getElement(Boolean_message).getBoolean();
@@ -113,7 +113,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         try {
             populateJSONObject(jObjectData, exception, stackTrace);
         } catch (ZSONException e) {
-            HiLog.error(LABEL, "JSON Exception");
+            HiLog.error(label, "JSON Exception");
         }
 
         /* To-Do: Add UploadCrashToServer() method here */
@@ -135,7 +135,7 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
             fileOutputStream.write(data.toString().getBytes());
         } catch (Exception e) {
-            HiLog.error(LABEL, "Text file Error ");
+            HiLog.error(label, "Text file Error ");
         }
     }
 
@@ -218,9 +218,6 @@ public class ExceptionHandler implements java.lang.Thread.UncaughtExceptionHandl
         }
         if (vmFreeHeapSize) {
             jObjectData.put("VM_free_Heap_Size", getConvertSize(Runtime.getRuntime().maxMemory()));
-        }
-        if (nativeAllocatedSize) {
-            jObjectData.put("Native_Allocated_Size", getHeapSize());
         }
     }
 
