@@ -1,10 +1,47 @@
+# Built application files
+*.hap
+*.har
+*.app
+
+# IntelliJ
 *.iml
-.gradle
-/local.properties
-/.idea/**
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/gradle.xml
+.idea/assetWizardSettings.xml
+.idea/dictionaries
+.idea/libraries
+.idea/jarRepositories.xml
+
+# DevEco Studio .gitignore file.
+.idea/caches
+.idea/modules.xml
+
+# File that stores position of elements in Navigation Editor
+.idea/navEditor.xml
+
+# Gradle files
+.gradle/
+build/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log Files
+*.log
+
+# DevEco Studio captures folder
+captures/
+
+
 .DS_Store
 /build
-/captures
 .externalNativeBuild
 /entry/.preview
 .cxx
+
+# lint
+lint/intermediates/
+lint/generated/
+lint/outputs/
+lint/tmp/
