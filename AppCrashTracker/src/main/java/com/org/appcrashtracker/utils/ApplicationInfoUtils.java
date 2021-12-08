@@ -33,6 +33,7 @@ public class ApplicationInfoUtils {
     private ApplicationInfoUtils() {
     }
 
+
     public static String getAppVersion(Context con) {
         IBundleManager manager = con.getBundleManager();
         BundleInfo info;
