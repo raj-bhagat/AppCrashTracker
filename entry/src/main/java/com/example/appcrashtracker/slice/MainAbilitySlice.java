@@ -17,10 +17,10 @@ public class MainAbilitySlice extends AbilitySlice {
         super.setUIContent(ResourceTable.Layout_ability_main);
         Button bt = (Button) findComponentById(ResourceTable.Id_crashButton);
 
-        bt.setClickedListener(component -> crashme());
+        bt.setClickedListener(component -> crashMe());
     }
 
-    private void crashme() {
+    private void crashMe() {
         HiLog.debug(new HiLogLabel(HiLog.LOG_APP,
                         0x00201,
                         "" + CONST),
