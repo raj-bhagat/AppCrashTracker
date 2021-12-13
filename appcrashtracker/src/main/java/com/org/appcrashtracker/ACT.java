@@ -13,7 +13,7 @@ public class ACT {
         throw new IllegalArgumentException("ACT Class");
     }
 
-    public static void init(Context context) throws NotExistException, WrongTypeException, IOException {
+    public static void init(Context context){
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler((Ability) context));
     }
 }

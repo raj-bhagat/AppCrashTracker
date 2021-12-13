@@ -23,15 +23,8 @@ public class MainAbility extends Ability {
                 && canRequestPermission(writePermission)) {
             requestPermissionsFromUser(new String[]{writePermission}, 101);
         }
-        try {
-            ACT.init(this);
-        } catch (NotExistException e) {
-            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201, "" + CONST), "NotExistException");
-        } catch (WrongTypeException e) {
-            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201, "" + CONST), "WrongTypeException");
-        } catch (IOException e) {
-            HiLog.error(new HiLogLabel(HiLog.LOG_APP, 0x00201, "" + CONST), "IOException");
-        }
+        ACT.init(this);
+
         super.setMainRoute(MainAbilitySlice.class.getName());
     }
 }
