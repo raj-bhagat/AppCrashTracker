@@ -8,9 +8,6 @@ import com.org.appcrashtracker.utils.NetworkUtils;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.ability.delegation.AbilityDelegatorRegistry;
 import ohos.app.Context;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
