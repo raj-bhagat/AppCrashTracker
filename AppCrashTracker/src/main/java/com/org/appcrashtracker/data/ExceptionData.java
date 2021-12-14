@@ -13,8 +13,79 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.org.appcrashtracker.data;
 
+import static com.example.appcrashtracker.ResourceTable.Boolean_allocated_vm_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_app_version;
+import static com.example.appcrashtracker.ResourceTable.Boolean_battery_charging;
+import static com.example.appcrashtracker.ResourceTable.Boolean_battery_charging_via;
+import static com.example.appcrashtracker.ResourceTable.Boolean_battery_percentage;
+import static com.example.appcrashtracker.ResourceTable.Boolean_brand_name;
+import static com.example.appcrashtracker.ResourceTable.Boolean_causes;
+import static com.example.appcrashtracker.ResourceTable.Boolean_class_name;
+import static com.example.appcrashtracker.ResourceTable.Boolean_country;
+import static com.example.appcrashtracker.ResourceTable.Boolean_device_name;
+import static com.example.appcrashtracker.ResourceTable.Boolean_device_orientation;
+import static com.example.appcrashtracker.ResourceTable.Boolean_external_free_space;
+import static com.example.appcrashtracker.ResourceTable.Boolean_external_memory_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_height;
+import static com.example.appcrashtracker.ResourceTable.Boolean_internal_free_space;
+import static com.example.appcrashtracker.ResourceTable.Boolean_internal_memory_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_localized_message;
+import static com.example.appcrashtracker.ResourceTable.Boolean_message;
+import static com.example.appcrashtracker.ResourceTable.Boolean_native_allocated_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_network_mode;
+import static com.example.appcrashtracker.ResourceTable.Boolean_package_name;
+import static com.example.appcrashtracker.ResourceTable.Boolean_release;
+import static com.example.appcrashtracker.ResourceTable.Boolean_screen_layout;
+import static com.example.appcrashtracker.ResourceTable.Boolean_sd_card_status;
+import static com.example.appcrashtracker.ResourceTable.Boolean_sdk_version;
+import static com.example.appcrashtracker.ResourceTable.Boolean_stack_trace;
+import static com.example.appcrashtracker.ResourceTable.Boolean_tablet;
+import static com.example.appcrashtracker.ResourceTable.Boolean_vm_free_heap_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_vm_heap_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_vm_max_heap_size;
+import static com.example.appcrashtracker.ResourceTable.Boolean_width;
+import static com.example.appcrashtracker.ResourceTable.String_key_allocated_vm_size;
+import static com.example.appcrashtracker.ResourceTable.String_key_app_version;
+import static com.example.appcrashtracker.ResourceTable.String_key_battery_charging_status;
+import static com.example.appcrashtracker.ResourceTable.String_key_battery_charging_via;
+import static com.example.appcrashtracker.ResourceTable.String_key_battery_percentage;
+import static com.example.appcrashtracker.ResourceTable.String_key_brand;
+import static com.example.appcrashtracker.ResourceTable.String_key_cause;
+import static com.example.appcrashtracker.ResourceTable.String_key_class;
+import static com.example.appcrashtracker.ResourceTable.String_key_country;
+import static com.example.appcrashtracker.ResourceTable.String_key_device_orientation;
+import static com.example.appcrashtracker.ResourceTable.String_key_devive;
+import static com.example.appcrashtracker.ResourceTable.String_key_external_free_space;
+import static com.example.appcrashtracker.ResourceTable.String_key_external_memory_size;
+import static com.example.appcrashtracker.ResourceTable.String_key_height;
+import static com.example.appcrashtracker.ResourceTable.String_key_internal_free_space;
+import static com.example.appcrashtracker.ResourceTable.String_key_internal_memory_size;
+import static com.example.appcrashtracker.ResourceTable.String_key_localised_message;
+import static com.example.appcrashtracker.ResourceTable.String_key_message;
+import static com.example.appcrashtracker.ResourceTable.String_key_native_allocated_size;
+import static com.example.appcrashtracker.ResourceTable.String_key_network_mode;
+import static com.example.appcrashtracker.ResourceTable.String_key_package_name;
+import static com.example.appcrashtracker.ResourceTable.String_key_release;
+import static com.example.appcrashtracker.ResourceTable.String_key_screen_layout;
+import static com.example.appcrashtracker.ResourceTable.String_key_sdcard_status;
+import static com.example.appcrashtracker.ResourceTable.String_key_sdk;
+import static com.example.appcrashtracker.ResourceTable.String_key_stack_trace;
+import static com.example.appcrashtracker.ResourceTable.String_key_tablet;
+import static com.example.appcrashtracker.ResourceTable.String_key_vm_heap_size;
+import static com.example.appcrashtracker.ResourceTable.String_key_vm_max_heap_size;
+import static com.example.appcrashtracker.ResourceTable.String_key_width;
+import static com.example.appcrashtracker.ResourceTable.String_url;
+import static com.example.appcrashtracker.ResourceTable.String_value_brand;
+import static com.org.appcrashtracker.utils.MemoryUtils.getAvailableExternalMemorySize;
+import static com.org.appcrashtracker.utils.MemoryUtils.getAvailableInternalMemorySize;
+import static com.org.appcrashtracker.utils.MemoryUtils.getConvertSize;
+import static com.org.appcrashtracker.utils.MemoryUtils.getHeapSize;
+import static com.org.appcrashtracker.utils.MemoryUtils.getSDCardStatus;
+import static com.org.appcrashtracker.utils.MemoryUtils.getTotalExternalMemorySize;
+import static com.org.appcrashtracker.utils.MemoryUtils.getTotalInternalMemorySize;
 import ohos.aafwk.ability.Ability;
 import ohos.bundle.BundleInfo;
 import ohos.global.resource.NotExistException;
@@ -24,23 +95,18 @@ import ohos.hiviewdfx.HiLog;
 import ohos.hiviewdfx.HiLogLabel;
 import ohos.system.DeviceInfo;
 import ohos.utils.zson.ZSONObject;
-import static com.example.appcrashtracker.ResourceTable.*;
-import static com.org.appcrashtracker.utils.MemoryUtils.*;
 import com.org.appcrashtracker.utils.ApplicationInfoUtils;
 import com.org.appcrashtracker.utils.BatteryUtils;
 import com.org.appcrashtracker.utils.NetworkUtils;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.Locale;
-/**
- * Data class to handle all the data
- * @author Raj Bhagat
- * @version 1.0.0
- */
+
+/** Data class to handle all the data. */
 public class ExceptionData {
 
-    private Ability ability;
-    private final HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x00201, getClass().getName());
+    private final Ability ability;
+
     private boolean className = false;
     private boolean message = false;
     private boolean localizedMessage = false;
@@ -74,13 +140,18 @@ public class ExceptionData {
     private boolean country = false;
     private ZSONObject jsonObjectData;
 
+    /**public ExceptionData constructor.
+     *
+     * @param ability Ability of exception handler
+     */
     public  ExceptionData(Ability ability) {
         this.ability = ability;
         ResourceManager resources = ability.getResourceManager();
+        HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x00201, getClass().getName());
         String postUrl = ability.getString(String_url);
-        if (postUrl.equals("default_url"))
+        if (postUrl.equals("default_url")) {
             HiLog.error(label, "Post url not specified");
-        else {
+        } else {
             try {
                 className = resources.getElement(Boolean_class_name).getBoolean();
                 message = resources.getElement(Boolean_message).getBoolean();
@@ -113,158 +184,181 @@ public class ExceptionData {
                 packageName = resources.getElement(Boolean_package_name).getBoolean();
                 networkMode = resources.getElement(Boolean_network_mode).getBoolean();
                 country = resources.getElement(Boolean_country).getBoolean();
-            }catch (IOException|NotExistException|WrongTypeException e) {
+            } catch (IOException | NotExistException | WrongTypeException e) {
                 HiLog.error(label, "IOException|NotExistException|WrongTypeException in Exception Data");
             }
         }
     }
 
-
-    /** writing the details of the requested conditions to the json file */
-    public void populateJSONObject( Throwable exception, StringWriter stackTrace) {
+    /**
+     * writing the details of the requested conditions to the json file.
+     *
+     * @param exception Throwable exception from unhandled exception
+     * @param stackTrace StringWriter it is a stack trace in string format
+     */
+    public void populateJsonObject(Throwable exception, StringWriter stackTrace) {
         jsonObjectData = new ZSONObject();
         if (packageName) {
-            jsonObjectData.put("Package_Name", ability.getBundleName());
+            jsonObjectData.put(ability.getString(String_key_package_name),
+                        ability.getBundleName());
         }
         if (className) {
-            jsonObjectData.put("Class", ability.getClass().getSimpleName());
+            jsonObjectData.put(ability.getString(String_key_class),
+                        ability.getClass().getSimpleName());
         }
         if (message) {
-            jsonObjectData.put("Message", exception.getMessage());
+            jsonObjectData.put(ability.getString(String_key_message),
+                        exception.getMessage());
         }
         if (localizedMessage) {
-            jsonObjectData.put("Localized_Message", exception.getLocalizedMessage());
+            jsonObjectData.put(ability.getString(String_key_localised_message),
+                        exception.getLocalizedMessage());
         }
         if (causes) {
-            jsonObjectData.put("Cause", exception.getCause());
+            jsonObjectData.put(ability.getString(String_key_cause),
+                    exception.getCause());
         }
         if (stackTraceBoolean) {
-            jsonObjectData.put("Stack_Trace", stackTrace.toString());
+            jsonObjectData.put(ability.getString(String_key_stack_trace),
+                    stackTrace.toString());
         }
-        setDeviceInfo(jsonObjectData);
-        setScreenOrientationAndLayout(jsonObjectData);
-        setInternalExternalMemoryValues(jsonObjectData);
-        setBatteryValues(jsonObjectData);
-        setMemoryValues(jsonObjectData);
+        setDeviceInfo();
+        setScreenOrientationAndLayout();
+        setInternalExternalMemoryValues();
+        setBatteryValues();
+        setMemoryValues();
+
     }
 
-    /** setting the device info in json file */
-    public void setDeviceInfo(ZSONObject jsonObjectData) {
+
+    /** setting the device info in json file. */
+    private void setDeviceInfo() {
         BundleInfo bi = new BundleInfo();
         if (brandName) {
-            jsonObjectData.put("Brand", "Huawei");
+            jsonObjectData.put(ability.getString(String_key_brand),
+                    ability.getString(String_value_brand));
         }
         if (deviceName) {
-            jsonObjectData.put("Device", DeviceInfo.getName());
+            jsonObjectData.put(ability.getString(String_key_devive),
+                    DeviceInfo.getName());
         }
         if (sdkVersion) {
-            jsonObjectData.put("SDK", bi.getMaxSdkVersion() + "");
+            jsonObjectData.put(ability.getString(String_key_sdk),
+                    bi.getMaxSdkVersion());
         }
         if (release) {
-            jsonObjectData.put("Release", bi.getVersionName());
+            jsonObjectData.put(ability.getString(String_key_release),
+                    bi.getVersionName());
         }
         if (height) {
-            jsonObjectData.put("Height", ability.getResourceManager().getDeviceCapability().height + "");
+            jsonObjectData.put(ability.getString(String_key_height),
+                    ability.getResourceManager().getDeviceCapability().height);
         }
         if (width) {
-            jsonObjectData.put("Width", ability.getResourceManager().getDeviceCapability().width);
+            jsonObjectData.put(ability.getString(String_key_width),
+                    ability.getResourceManager().getDeviceCapability().width);
         }
         if (appVersion) {
-            jsonObjectData.put("App_Version", ApplicationInfoUtils.getAppVersion(ability));
+            jsonObjectData.put(ability.getString(String_key_app_version),
+                    ApplicationInfoUtils.getAppVersion(ability));
         }
         if (tablet) {
-            jsonObjectData.put("Tablet", " " + ApplicationInfoUtils.isTablet(ability));
+            jsonObjectData.put(ability.getString(String_key_tablet),
+                    ApplicationInfoUtils.isTablet(ability));
         }
         if (networkMode) {
-            jsonObjectData.put("Network_Mode", NetworkUtils.getNetworkMode(ability));
+            jsonObjectData.put(ability.getString(String_key_network_mode),
+                    NetworkUtils.getNetworkMode(ability));
         }
         if (country) {
-            jsonObjectData.put("Country", new Locale("", ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
+            jsonObjectData.put(ability.getString(String_key_country),
+                    new Locale("",
+                            ability.getResourceManager()
+                                    .getConfiguration()
+                                    .getFirstLocale()
+                                    .getCountry())
+                            .getDisplayCountry());
         }
     }
 
-    /** setting the screen details in json file */
-    public void setScreenOrientationAndLayout(ZSONObject jsonObjectData) {
+    /** setting the screen details in json file. */
+    private void setScreenOrientationAndLayout() {
         if (deviceOrientation) {
-            jsonObjectData.put("Device_Orientation", ApplicationInfoUtils.getScreenOrientation(ability));
+            jsonObjectData.put(ability.getString(String_key_device_orientation),
+                    ApplicationInfoUtils.getScreenOrientation(ability));
         }
         if (screenLayout) {
-            jsonObjectData.put("Screen_Layout", ApplicationInfoUtils.getScreenLayout(ability));
-        }
-        if (vmHeapSize) {
-            jsonObjectData.put("VM_Heap_Size", getConvertSize(Runtime.getRuntime().totalMemory()));
-        }
-        if (allocatedVmSize) {
-            jsonObjectData.put("Allocated_VM_Size", getConvertSize(Runtime.getRuntime().freeMemory()));
-        }
-        if (vmMaxHeapSize) {
-            jsonObjectData.put("VM_Max_Heap_Size", getConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
-        }
-        if (vmFreeHeapSize) {
-            jsonObjectData.put("VM_free_Heap_Size", getConvertSize(Runtime.getRuntime().maxMemory()));
+            jsonObjectData.put(ability.getString(String_key_screen_layout),
+                    ApplicationInfoUtils.getScreenLayout(ability));
         }
     }
 
-    /** setting the Battery info in json file */
-    public void setBatteryValues(ZSONObject jsonObjectData) {
+    /** setting the Battery info in json file. */
+    private void setBatteryValues() {
         if (batteryPercentage) {
-            jsonObjectData.put("Battery_Percentage", BatteryUtils.getBatteryChargeLevel());
+            jsonObjectData.put(ability.getString(String_key_battery_percentage),
+                    BatteryUtils.getBatteryChargeLevel());
         }
         if (batteryCharging) {
-            jsonObjectData.put("Battery_Charging_Status", BatteryUtils.getBatteryStatus());
+            jsonObjectData.put(ability.getString(String_key_battery_charging_status),
+                    BatteryUtils.getBatteryStatus());
         }
         if (batteryChargingVia) {
-            jsonObjectData.put("Battery_Charging_Via", BatteryUtils.getBatteryChargingMode());
+            jsonObjectData.put(ability.getString(String_key_battery_charging_via),
+                    BatteryUtils.getBatteryChargingMode());
         }
     }
 
-    /** setting the internal external Memory info in json file */
-    public void setInternalExternalMemoryValues(ZSONObject jsonObjectData) {
+    /** setting the internal external Memory info in json file. */
+    private void setInternalExternalMemoryValues() {
         if (sdCardStatus) {
-            jsonObjectData.put("SDCard_Status", getSDCardStatus());
+            jsonObjectData.put(ability.getString(String_key_sdcard_status),
+                    getSDCardStatus());
         }
         if (internalMemorySize) {
-            jsonObjectData.put("Internal_Memory_Size", getTotalInternalMemorySize(ability));
+            jsonObjectData.put(ability.getString(String_key_internal_memory_size),
+                    getTotalInternalMemorySize(ability));
         }
         if (externalMemorySize) {
-            jsonObjectData.put("External_Memory_Size", getTotalExternalMemorySize(ability));
+            jsonObjectData.put(ability.getString(String_key_external_memory_size),
+                    getTotalExternalMemorySize(ability));
         }
         if (internalFreeSpace) {
-            jsonObjectData.put("Internal_Free_Space", getAvailableInternalMemorySize(ability));
+            jsonObjectData.put(ability.getString(String_key_internal_free_space),
+                    getAvailableInternalMemorySize(ability));
         }
         if (externalFreeSpace) {
-            jsonObjectData.put("External_Free_Space", getAvailableExternalMemorySize(ability));
-        }
-        if (networkMode) {
-            jsonObjectData.put("Network_Mode", NetworkUtils.getNetworkMode(ability));
+            jsonObjectData.put(ability.getString(String_key_external_free_space),
+                    getAvailableExternalMemorySize(ability));
         }
     }
 
-    /** setting the Memory info in json file */
-    public void setMemoryValues(ZSONObject jsonObjectData) {
+    /** setting the Memory info in json file. */
+    private void setMemoryValues() {
         if (vmHeapSize) {
-            jsonObjectData.put("VM_Heap_Size", getConvertSize(Runtime.getRuntime().totalMemory()));
+            jsonObjectData.put(ability.getString(String_key_vm_heap_size),
+                    getConvertSize(Runtime.getRuntime().totalMemory()));
         }
-        if (country) {
-            jsonObjectData.put("Country", new Locale("", ability.getResourceManager().getConfiguration().getFirstLocale().getCountry()).getDisplayCountry());
-            if (allocatedVmSize) {
-                jsonObjectData.put("Allocated_VM_Size", getConvertSize(Runtime.getRuntime().freeMemory()));
-            }
-            if (vmMaxHeapSize) {
-                jsonObjectData.put("VM_Max_Heap_Size",
-                        getConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
-            }
-            if (vmFreeHeapSize) {
-                jsonObjectData.put("VM_free_Heap_Size", getConvertSize(Runtime.getRuntime().maxMemory()));
-            }
-            if (nativeAllocatedSize) {
-                jsonObjectData.put("Native_Allocated_Size", getHeapSize());
-            }
+        if (allocatedVmSize) {
+            jsonObjectData.put(ability.getString(String_key_allocated_vm_size),
+                    getConvertSize(Runtime.getRuntime().freeMemory()));
+        }
+        if (vmMaxHeapSize) {
+            jsonObjectData.put(ability.getString(String_key_vm_max_heap_size),
+                    getConvertSize((Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory())));
+        }
+        if (vmFreeHeapSize) {
+            jsonObjectData.put(ability.getString(String_key_vm_max_heap_size),
+                    getConvertSize(Runtime.getRuntime().maxMemory()));
+        }
+        if (nativeAllocatedSize) {
+            jsonObjectData.put(ability.getString(String_key_native_allocated_size),
+                    getHeapSize());
         }
     }
 
-    /** returning the json file */
-    public ZSONObject getJsonObjectData(){
+    /** returning the json file. */
+    public ZSONObject getJsonObjectData() {
         return jsonObjectData;
     }
 }
