@@ -1,19 +1,13 @@
 package com.example.appcrashtracker;
 
+import com.example.appcrashtracker.slice.MainAbilitySlice;
+import com.org.appcrashtracker.ACT;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.content.Intent;
 import ohos.bundle.IBundleManager;
-import ohos.global.resource.NotExistException;
-import ohos.global.resource.WrongTypeException;
-import ohos.hiviewdfx.HiLog;
-import ohos.hiviewdfx.HiLogLabel;
-import com.example.appcrashtracker.slice.MainAbilitySlice;
-import com.org.appcrashtracker.ACT;
-import java.io.IOException;
 
 /** This is where we ask permission and call ACT and the main ability for sample application. */
 public class MainAbility extends Ability {
-    private static final String CONST = "Exception";
     private String writePermission =  "ohos.permission.WRITE_USER_STORAGE";
 
     @Override
