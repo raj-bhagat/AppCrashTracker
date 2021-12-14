@@ -144,7 +144,7 @@ public class ExceptionData {
      *
      * @param ability Ability of exception handler
      */
-    public  ExceptionData(Ability ability) {
+    public ExceptionData(Ability ability) {
         this.ability = ability;
         ResourceManager resources = ability.getResourceManager();
         HiLogLabel label = new HiLogLabel(HiLog.LOG_APP, 0x00201, getClass().getName());

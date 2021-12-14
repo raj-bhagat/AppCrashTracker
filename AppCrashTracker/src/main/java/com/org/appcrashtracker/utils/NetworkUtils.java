@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.org.appcrashtracker.utils;
 
 import ohos.app.Context;
@@ -22,11 +23,10 @@ import ohos.telephony.RadioInfoManager;
 import ohos.telephony.SignalInformation;
 import ohos.telephony.SimInfoManager;
 import ohos.telephony.TelephonyConstants;
-
 import java.util.List;
 
-/**
- * Utility class for obtaining network related information
+/**Utility class for obtaining network related information.
+ *
  * @author Kanak Sony
  * @Version 1.0.0
  */
@@ -38,12 +38,12 @@ public class NetworkUtils {
     public static String getNetworkMode(Context con) {
         NetManager netManager = NetManager.getInstance(con);
         NetCapabilities netCapabilities = netManager.getNetCapabilities(netManager.getDefaultNet());
-        if (netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED) &&
-                netCapabilities.hasBearer(NetCapabilities.BEARER_WIFI) ||
-                netCapabilities.hasBearer(NetCapabilities.BEARER_WIFI_AWARE)) {
+        if (netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED)
+                && netCapabilities.hasBearer(NetCapabilities.BEARER_WIFI)
+                || netCapabilities.hasBearer(NetCapabilities.BEARER_WIFI_AWARE)) {
             return "Wifi";
-        } else if (netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED) &&
-                netCapabilities.hasBearer(NetCapabilities.BEARER_CELLULAR)) {
+        } else if (netCapabilities.hasCap(NetCapabilities.NET_CAPABILITY_VALIDATED)
+                && netCapabilities.hasBearer(NetCapabilities.BEARER_CELLULAR)) {
             return getRadioInfo(con);
         } else {
             return "No Network";

@@ -1,5 +1,6 @@
 package com.example.appcrashtracker;
 
+import com.org.appcrashtracker.data.ExceptionData;
 import com.org.appcrashtracker.utils.ApplicationInfoUtils;
 import com.org.appcrashtracker.utils.BatteryUtils;
 import com.org.appcrashtracker.utils.MemoryUtils;
@@ -7,14 +8,17 @@ import com.org.appcrashtracker.utils.NetworkUtils;
 import ohos.aafwk.ability.Ability;
 import ohos.aafwk.ability.delegation.AbilityDelegatorRegistry;
 import ohos.app.Context;
+import ohos.hiviewdfx.HiLog;
+import ohos.hiviewdfx.HiLogLabel;
+import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ExampleOhosTest {
     private final Context context = AbilityDelegatorRegistry.getAbilityDelegator().getAppContext();
     private final Ability ability = AbilityDelegatorRegistry.getAbilityDelegator().getCurrentTopAbility();
+
     @Test
     public void testBundleName() {
         final String actualBundleName = AbilityDelegatorRegistry.getArguments().getTestBundleName();
@@ -34,7 +38,7 @@ public class ExampleOhosTest {
     }
 
     @Test
-    public void testScreeenOrientation(){
+    public void testScreenOrientation(){
         final String screenOrientation = ApplicationInfoUtils.getScreenOrientation(ability);
         assertEquals("Not Defined",screenOrientation);
     }
@@ -96,12 +100,21 @@ public class ExampleOhosTest {
     @Test
     public void testHeapSize(){
         final String heapSize =MemoryUtils.getHeapSize();
-        assertEquals("28 MB",heapSize);
+        assertEquals("26 MB",heapSize);
     }
 
     @Test
     public void testNetworkMode(){
-        final String networlMode = NetworkUtils.getNetworkMode(context);
-        assertEquals("Wifi",networlMode);
+        final String networkMode = NetworkUtils.getNetworkMode(context);
+        assertEquals("Wifi",networkMode);
+    }
+
+    /** Since we cannot throw exception and populate the json object.
+     * So we are testing for the Json Object to be null
+     */
+    @Test
+    public void testGetJsonObject() {
+        ExceptionData data =new ExceptionData(ability);
+        assertNull(data.getJsonObjectData());
     }
 }
