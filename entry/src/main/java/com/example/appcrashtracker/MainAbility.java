@@ -13,10 +13,12 @@ public class MainAbility extends Ability {
     @Override
     public void onStart(Intent intent) {
         super.onStart(intent);
+        // Requesting permission to write on user storage
         if (verifySelfPermission(writePermission) != IBundleManager.PERMISSION_GRANTED
                 && canRequestPermission(writePermission)) {
             requestPermissionsFromUser(new String[]{writePermission}, 101);
         }
+        //Initializing AppCrashTracker
         ACT.init(this);
 
         super.setMainRoute(MainAbilitySlice.class.getName());

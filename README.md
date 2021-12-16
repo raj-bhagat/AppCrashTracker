@@ -1,178 +1,291 @@
 # AppCrashTracker
-Its a kind of toolkit to track the exception arising in the application and it will generate a json and can upload in your server using your own post url.
+Its a kind of toolkit to track the exception arising in the application and it will generate a json and can store it in your phone in txt file.
 
 No need to worry and think to add more line of code. Simple is better. So a single invoke is enough to make better app.
 
-<i>Offline tracker coming soon!!</i>
+<i>Online tracker coming soon!!</i>
 
-[![API](https://img.shields.io/badge/API-11%2B-orange.svg?style=flat)](https://android-arsenal.com/api?level=11)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AppCrashTracker-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/2978)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=applibgroup_AppCrashTracker&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=applibgroup_AppCrashTracker)
+[![Build](https://github.com/applibgroup/AppCrashTracker/actions/workflows/main.yml/badge.svg)](https://github.com/applibgroup/AppCrashTracker/actions/workflows/main.yml)
 
-
-#Input
+# Input
 
 ```java
 
-ACT.init(this,MainActivity.class);
+public class MainAbility extends Ability {
+    private String writePermission =  "ohos.permission.WRITE_USER_STORAGE";
+
+    @Override
+    public void onStart(Intent intent) {
+        super.onStart(intent);
+        // Requesting permission to write on user storage
+        if (verifySelfPermission(writePermission) != IBundleManager.PERMISSION_GRANTED
+                && canRequestPermission(writePermission)) {
+            requestPermissionsFromUser(new String[]{writePermission}, 101);
+        }
+        //Initializing AppCrashTracker
+        ACT.init(this);
+
+        super.setMainRoute(MainAbilitySlice.class.getName());
+    }
+}
 
 ```
 
-#Output
+# Output
 ```jsonobject
 {
-
-"Package_Name" : com.example.act_sample,
-
-"VM_Max_Heap_Size" : 9.3 MB,
-
-"VM_free_Heap_Size" : 64 MB,
-
-"VM_Heap_Size" : 9.8 MB,
-
-"Internal_Memory_Size" : 503.4 MB,
-
-"Internal_Free_Space" : 100.3 MB,
-
-"Device_Orientation" : Portrait,
-
-"Screen_Layout" : Normal Screen,
-
-"SDCard_Status" : Mounted,
-
-"External_Free_Space" : 1.8 GB,
-
-"Battery_Percentage" : 100,
-
-"Device_IsRooted" : false,
-
-"Network_Mode" : Wifi,
-
-"Battery_Charging_Via" : USB,
-
-"Native_Allocated_Size" : 2 MB,
-
-"External_Memory_Size" : 7.4 GB,
-
-"Allocated_VM_Size" : 482.1 kB,
-
-"Brand" : Google Nexus,
-
-"Model" : Nexus 5,
-
-"Product" : Nexus 5,
-
-"Device" : 5x,
-
-"Message" : Unable to start activity ComponentInfo{com.example.act_sample\/com.example.act_sample.MainActivity}: java.lang.NumberFormatException: Invalid int: \"asdf\",
-
-"Incremental" : eng.terry.1365412624,
-
-"Height" : 854,
-
-"SDK" : 16,
-
-"Release" : 4.1.1,
-
-"Localized_Message" : Unable to start activity ComponentInfo{com.example.act_sample\/com.example.act_sample.MainActivity}: java.lang.NumberFormatException: Invalid int: \"asdf\",
-
-"Tablet" : false,
-
-"Class" : MainActivity,
-
-"App_Version" : 1.0,
-
-"Width" : 480,
-
-"Stack_Trace" : java.lang.RuntimeException: Unable to start activity ComponentInfo{com.example.act_sample\/com.example.act_sample.MainActivity}: 
-java.lang.NumberFormatException: Invalid int: \"asdf\"
-android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2184)
-android.app.ActivityThread.handleLaunchActivity(ActivityThread.java:2211)
-android.app.ActivityThread.access$600(ActivityThread.java:149)
-android.app.ActivityThread$H.handleMessage(ActivityThread.java:1300)
-android.os.Handler.dispatchMessage(Handler.java:99)
-android.os.Looper.loop(Looper.java:153)
-android.app.ActivityThread.main(ActivityThread.java:5086)
-java.lang.reflect.Method.invokeNative(Native Method)
-java.lang.reflect.Method.invoke(Method.java:511)
-com.android.internal.os.ZygoteInit$MethodAndArgsCaller.run(ZygoteInit.java:821)
-com.android.internal.os.ZygoteInit.main(ZygoteInit.java:584)
-dalvik.system.NativeStart.main(Native Method)
-Caused by: java.lang.NumberFormatException: Invalid int: \"asdf\"
-java.lang.Integer.invalidInt(Integer.java:138)
-java.lang.Integer.parse(Integer.java:375)
-java.lang.Integer.parseInt(Integer.java:366)
-java.lang.Integer.parseInt(Integer.java:332)
-com.example.act_sample.MainActivity.onCreate(MainActivity.java:17)
-android.app.Activity.performCreate(Activity.java:5020)
-android.app.Instrumentation.callActivityOnCreate(Instrumentation.java:1080)
-android.app.ActivityThread.performLaunchActivity(ActivityThread.java:2148)
-... 11 more,
-
-"Cause" : java.lang.NumberFormatException: Invalid int: \"asdf\"
-
-"Country" : India
+  "Allocated_VM_Size": "7.5 MB",
+  "App_Version": "1.0.0",
+  "Battery_Charging_Status": "Battery Full",
+  "Battery_Charging_Via": "USB",
+  "Battery_Percentage": "HIGH",
+  "Brand": "Huawei",
+  "Class": "MainAbility",
+  "Country": "United States",
+  "Device": "WGR-W09NM",
+  "Device_Orientation": "Potrait",
+  "External_Free_Space": "6.2 GB",
+  "External_Memory_Size": "7.9 GB",
+  "Height": "1221",
+  "Internal_Free_Space": "6.3 GB",
+  "Internal_Memory_Size": "7.9 GB",
+  "Localized_Message": "For input string: \"asdf\"",
+  "Message": "For input string: \"asdf\"",
+  "Native_Allocated_Size": "26 MB",
+  "Network_Mode": "Wifi",
+  "Package_Name": "com.example.appcrashtracker",
+  "Release": "",
+  "SDCard_Status": "External Storage Not Supported",
+  "SDK": "0",
+  "Screen_Layout": "Extra Large Screen",
+  "Stack_Trace": "java.lang.NumberFormatException: For input string: "asdf"
+                  	at java.lang.Integer.parseInt(Integer.java:615)
+                  	at java.lang.Integer.parseInt(Integer.java:650)
+                  	at com.example.appcrashtracker.slice.MainAbilitySlice.crashMe(MainAbilitySlice.java:27)
+                  	at com.example.appcrashtracker.slice.MainAbilitySlice.lambda$onStart$0$MainAbilitySlice(MainAbilitySlice.java:20)
+                  	at com.example.appcrashtracker.slice.-$$Lambda$MainAbilitySlice$EgwfRuuCRykr_9cSmKEf3JBlac4.onClick(Unknown Source:2)
+                  	at ohos.agp.window.wmc.AGPEngineAdapter.nativeDispatchTouchEvent(Native Method)
+                  	at ohos.agp.window.wmc.AGPEngineAdapter.processTouchEvent(AGPEngineAdapter.java:196)
+                  	at ohos.agp.window.wmc.AGPWindow.dispatchTouchEvent(AGPWindow.java:749)
+                  	at ohos.aafwk.ability.AbilityWindow.dispatchTouchEvent(AbilityWindow.java:413)
+                  	at ohos.aafwk.ability.Ability.dispatchTouchEvent(Ability.java:1096)
+                  	at ohos.abilityshell.AbilityShellActivityDelegate.convertTouchEventThenDispatch(AbilityShellActivityDelegate.java:627)
+                  	at ohos.abilityshell.AbilityShellActivity.dispatchTouchEvent(AbilityShellActivity.java:162)
+                  	at com.android.internal.policy.DecorView.dispatchTouchEvent(DecorView.java:685)
+                  	at android.view.View.dispatchPointerEvent(View.java:13957)
+                  	at android.view.ViewRootImpl$ViewPostImeInputStage.processPointerEvent(ViewRootImpl.java:6420)
+                  	at android.view.ViewRootImpl$ViewPostImeInputStage.onProcess(ViewRootImpl.java:6215)
+                  	at android.view.ViewRootImpl$InputStage.deliver(ViewRootImpl.java:5604)
+                  	at android.view.ViewRootImpl$InputStage.onDeliverToNext(ViewRootImpl.java:5657)
+                  	at android.view.ViewRootImpl$InputStage.forward(ViewRootImpl.java:5623)
+                  	at android.view.ViewRootImpl$AsyncInputStage.forward(ViewRootImpl.java:5781)
+                  	at android.view.ViewRootImpl$InputStage.apply(ViewRootImpl.java:5631)
+                  	at android.view.ViewRootImpl$AsyncInputStage.apply(ViewRootImpl.java:5838)
+                  	at android.view.ViewRootImpl$InputStage.deliver(ViewRootImpl.java:5604)
+                  	at android.view.ViewRootImpl$InputStage.onDeliverToNext(ViewRootImpl.java:5657)
+                  	at android.view.ViewRootImpl$InputStage.forward(ViewRootImpl.java:5623)
+                  	at android.view.ViewRootImpl$InputStage.apply(ViewRootImpl.java:5631)
+                  	at android.view.ViewRootImpl$InputStage.deliver(ViewRootImpl.java:5604)
+                  	at android.view.ViewRootImpl.deliverInputEvent(ViewRootImpl.java:8698)
+                  	at android.view.ViewRootImpl.doProcessInputEvents(ViewRootImpl.java:8618)
+                  	at android.view.ViewRootImpl.enqueueInputEvent(ViewRootImpl.java:8571)
+                  	at android.view.ViewRootImpl$WindowInputEventReceiver.onInputEvent(ViewRootImpl.java:8956)
+                  	at android.view.InputEventReceiver.dispatchInputEvent(InputEventReceiver.java:239)
+                  	at android.os.MessageQueue.nativePollOnce(Native Method)
+                  	at android.os.MessageQueue.next(MessageQueue.java:363)
+                  	at android.os.Looper.loop(Looper.java:176)
+                  	at android.app.ActivityThread.main(ActivityThread.java:8668)
+                  	at java.lang.reflect.Method.invoke(Native Method)
+                  	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:513)
+                  	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:1109)",
+  "Tablet": "true",
+  "VM_Heap_Size": "9.7 MB",
+  "VM_Max_Heap_Size": "2.2 MB",
+  "VM_free_Heap_Size": "384 MB",
+  "Width": "800"
 }
 ```
+In a crash.txt file
 
-#Requirements
+# Requirements
 
 <ul>
-<li>Init from onCreate Method with context and default class<li>
-<li>Add Interent Permission<li>
-<li>Add Access Network State Permission<li>
-<li>Add Configuration in String.xml . Please refer <a href="https://github.com/macroday/AppCrashTracker/blob/master/README.md#configuration">Configuration</a> link</li>
+<li>Add Gradle Dependencies</li>
+<li>Init from onCreate Method with context and default class</li>
+<li>Add write to user storage permission</li>
+<li>Add Configuration boolean.json . Please refer <a href="https://github.com/applibgroup/AppCrashTracker/blob/main/appcrashtracker/src/main/resources/base/element/boolean.json">Configuration</a> link</li>
 </ul>
 
-#Configuration
-Its nothing but, you can customize the data come out from the result. For example, if you want to see the sdk version of the device means, you just add a bool in to string.xml to true. Enough! 
-The bool must the same name. Those are following
+# Add Gradle Dependencies
+1. For using AppCrashTracker module in sample app, include the source code and add the below dependencies in entry/build.gradle to generate hap/support.har.
 
-```xml
-   <string name="url">post_url</string>
-   <bool name="class_name">ture</bool>
-   <bool name="message">true</bool>
-   <bool name="localized_message">true</bool>
-   <bool name="causes">true</bool>
-   <bool name="stack_trace">true</bool>
-   <bool name="brand_name">false</bool>
-   <bool name="device_name">false</bool>
-   <bool name="model_number">false</bool>
-   <bool name="product_name">false</bool>
-   <bool name="sdk_version">false</bool>
-   <bool name="release">false</bool>
-   <bool name="incremental">false</bool>
-   <bool name="height">false</bool>
-   <bool name="width">false</bool>
-   <bool name="app_version">false</bool>
-   <bool name="tablet">false</bool>
-   <bool name="package_name">false</bool>
-   <bool name="device_orientation">false</bool>
-	<bool name="screen_layout">false</bool>
-	<bool name="vm_heap_size">false</bool>
-	<bool name="allocated_vm_size">false</bool>
-	<bool name="vm_max_heap_size">false</bool>
-	<bool name="vm_free_heap_size">false</bool>
-	<bool name="native_allocated_size">false</bool>
-	<bool name="battery_percentage">false</bool>
-	<bool name="battery_charging">false</bool>
-	<bool name="battery_charging_via">false</bool>
-	<bool name="sd_card_status">false</bool>
-	<bool name="internal_memory_size">false</bool>
-	<bool name="external_memory_size">false</bool>
-	<bool name="internal_free_space">false</bool>
-	<bool name="external_free_space">false</bool>
-	<bool name="device_rooted">false</bool>
-	<bool name="network_mode">false</bool>
-	<bool name="country">false</bool>
+```
+   dependencies {
+      implementation project(':appcrashtracker')
+      implementation fileTree(dir: 'libs', include: ['*.har'])
+      testCompile 'junit:junit:4.12'
+   }
+```
+
+2. For using AppCrashTracker in separate application using har file, add the har file in the entry/libs folder and add the dependencies in entry/build.gradle file.
+
+```
+   dependencies {
+      implementation fileTree(dir: 'libs', include: ['*.har'])
+      testCompile 'junit:junit:4.12'
+   }
+```
+
+3. For using AppCrashTracker from a remote repository in separate application, add the below dependencies in entry/build.gradle file.
+
+```
+   dependencies {
+      implementation 'dev.applibgroup:appcrashtracker:1.0.0'
+      testCompile 'junit:junit:4.12'
+   }
+```
+
+# Configuration
+It is nothing much but you just need to add boolean json file in resources/base/element directory of your application to customize the data that you want as result. 
+For example if you do not want to see the height and width of the device you just need to add the an boolean object with value false.
+The name must be same. Below are the names of boolean value. 
+
+```json
+   {
+     "boolean": [
+       {
+         "name": "class_name",
+         "value": true
+       },
+       {
+         "name": "message",
+         "value": false
+       },
+       {
+         "name": "localized_message",
+         "value": true
+       },
+       {
+         "name": "causes",
+         "value": false
+       },
+       {
+         "name": "stack_trace",
+         "value": false
+       },
+       {
+         "name": "brand_name",
+         "value": true
+       },
+       {
+         "name": "device_name",
+         "value": false
+       },
+       {
+         "name": "sdk_version",
+         "value": false
+       },
+       {
+         "name": "release",
+         "value": false
+       },
+       {
+         "name": "height",
+         "value": true
+       },
+       {
+         "name": "width",
+         "value": true
+       },
+       {
+         "name": "app_version",
+         "value": false
+       },
+       {
+         "name": "tablet",
+         "value": false
+       },
+       {
+         "name": "package_name",
+         "value": false
+       },
+       {
+         "name": "device_orientation",
+         "value": false
+       },
+       {
+         "name": "screen_layout",
+         "value": false
+       },
+       {
+         "name": "vm_heap_size",
+         "value": false
+       },
+       {
+         "name": "allocated_vm_size",
+         "value": false
+       },
+       {
+         "name": "vm_max_heap_size",
+         "value": false
+       },
+       {
+         "name": "vm_free_heap_size",
+         "value": false
+       },
+       {
+         "name": "native_allocated_size",
+         "value": false
+       },
+       {
+         "name": "battery_percentage",
+         "value": false
+       },
+       {
+         "name": "battery_charging",
+         "value": false
+       },
+       {
+         "name": "battery_charging_via",
+         "value": false
+       },
+       {
+         "name": "sd_card_status",
+         "value": false
+       },
+       {
+         "name": "internal_memory_size",
+         "value": false
+       },
+       {
+         "name": "external_memory_size",
+         "value": false
+       },
+       {
+         "name": "internal_free_space",
+         "value": false
+       },
+       {
+         "name": "external_free_space",
+         "value": false
+       },
+       {
+         "name": "network_mode",
+         "value": false
+       },
+       {
+         "name": "country",
+         "value": false
+       }
+     ]
+   }
 
 ```
 
 
 
-#API Level
-2.2 to Latest
-
-#License
+# License
 ```license
 Copyright 2015-2016 Ganesh Krishnamoorthy
 
