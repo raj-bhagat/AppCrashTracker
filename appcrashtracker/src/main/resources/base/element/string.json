@@ -1,0 +1,141 @@
+{
+  "string": [
+    {
+      "name": "appcrashtracker_library",
+      "value": "appcrashtracker_library"
+    },
+    {
+      "name": "url",
+      "value": "http://2a10-2409-4061-2c10-d26b-b126-a5b0-3fa2-8636.ngrok.io/appmsg"
+    },
+    {
+      "name": "key_brand",
+      "value": "brand"
+    },
+    {
+      "name": "value_brand",
+      "value": "Huawei"
+    },
+    {
+      "name": "key_package_name",
+      "value": "Package_Name"
+    },
+    {
+      "name": "key_class",
+      "value": "Class"
+    },
+    {
+      "name": "key_message",
+      "value": "Message"
+    },
+    {
+      "name": "key_localised_message",
+      "value": "Localised_message"
+    },
+    {
+    "name": "key_cause",
+    "value": "Cause"
+    },
+    {
+      "name": "key_stack_trace",
+      "value": "Stack_Trace"
+    }
+  ,
+    {
+      "name": "key_devive",
+      "value": "Device"
+    },
+    {
+      "name": "key_sdk",
+      "value": "SDK"
+    },
+    {
+      "name": "key_release",
+      "value": "Release"
+    },
+    {
+      "name": "key_height",
+      "value": "Height"
+    },
+    {
+      "name": "key_width",
+      "value": "Width"
+    },
+    {
+      "name": "key_app_version",
+      "value": "App_Version"
+    },
+    {
+      "name": "key_tablet",
+      "value": "Tablet"
+    },
+    {
+      "name": "key_network_mode",
+      "value": "Network_Mode"
+    },
+    {
+      "name": "key_country",
+      "value": "Country"
+    },
+    {
+      "name": "key_device_orientation",
+      "value": "Device_Orientation"
+    },
+    {
+      "name": "key_screen_layout",
+      "value": "Screen_Layout"
+    },
+    {
+      "name": "key_vm_heap_size",
+      "value": "VM_Heap_Size"
+    },
+    {
+      "name": "key_allocated_vm_size",
+    "value": "Allocated_VM_Size"
+    },
+    {
+      "name": "key_vm_max_heap_size",
+      "value": "VM_Max_Heap_Size"
+    },
+    {
+      "name": "key_vm_free_heap_size",
+      "value": "VM_free_Heap_Size"
+    },
+    {
+      "name": "key_native_allocated_size",
+      "value": "Native_Allocated_Size"
+    },
+    {
+      "name": "key_battery_percentage",
+      "value": "Battery_Percentage"
+    },
+    {
+      "name": "key_battery_charging_status",
+      "value": "Battery_Charging_Status"
+    },
+    {
+      "name": "key_battery_charging_via",
+      "value": "Battery_Charging_Via"
+    },
+    {
+      "name": "key_sdcard_status",
+      "value": "SDCard_Status"
+    },
+    {
+      "name": "key_internal_memory_size",
+      "value": "Internal_Memory_Size"
+    },
+    {
+      "name": "key_external_memory_size",
+      "value": "External_Memory_Size"
+    },
+    {
+      "name": "key_internal_free_space",
+      "value": "Internal_Free_Space"
+    },
+    {
+      "name": "key_external_free_space",
+      "value": "External_Free_Space"
+    }
+  ]
+}
